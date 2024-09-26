@@ -1,0 +1,294 @@
+body {
+  margin: 0;
+  font-family: anton-sc-regular;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: rgb(23, 23, 23);
+}
+
+code {
+  font-family: anton-sc-regular;
+}
+
+.anton-sc-regular {
+  font-family: "Anton SC", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/*
+////////////////////
+FOOTER
+////////////////////
+*/
+
+footer {
+  background-color: #e0ba20c7;
+  padding: 25px;
+  font-size: 24px;
+  font-family: Impact, Haettenschweiler, "Arial Bold", sans-serif;
+  text-align: center;
+}
+.nonchalant-footer {
+  text-decoration: none;
+  color: darkslategrey;
+}
+
+.nonchalant-footer:hover {
+  color: rgb(80, 90, 100);
+}
+
+/*
+////////////////////
+NAVBAR
+////////////////////
+*/
+
+nav {
+  font-family: Impact, Haettenschweiler, "Arial", sans-serif;
+  font-size: 24px;
+  text-shadow: 2px 2px black;
+}
+
+.navbar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  background-color: rgb(52, 58, 64);
+}
+
+.navbar-mobile {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  background-color: rgb(52, 58, 64);
+}
+
+.nav-pic-desktop {
+  width: 40%;
+  margin: -1em -1em -1.4em 0em;
+}
+
+.nav-pic-tablet {
+  width: 200px;
+  margin: -0.85em -1em -1.25em -0.5em;
+}
+
+.nav-pic-mobile {
+  width: 200px;
+  margin: -1em -1em -1.4em 0em;
+}
+
+.nonchalant_nav {
+  text-decoration: none;
+  color: lightgrey;
+  padding: 1em;
+}
+
+.nav_link_div {
+  margin-top: auto;
+  margin-bottom: 0.25em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+}
+
+.shopping-cart-desktop {
+  padding: 0.5em;
+  padding-left: 1em;
+}
+
+.shopping-cart-tablet {
+  padding-top: 0.5em;
+  padding-left: 1em;
+}
+
+.shopping-cart-mobile {
+  padding: 0.5em;
+  padding-left: 1em;
+}
+
+.nonchalant_nav:hover {
+  color: rgb(80, 90, 100);
+}
+
+/*
+////////////////////
+HOME
+////////////////////
+*/
+
+.menu {
+  text-decoration: none;
+  color: rgb(33, 37, 49);
+  text-shadow: none;
+  letter-spacing: 1.7px;
+}
+
+.pizza-video-div {
+  width: 80%;
+  margin: auto;
+}
+
+.pizza-video {
+  width: 100%;
+  margin: auto;
+}
+
+.active {
+  background-color: rgb(112, 112, 112);
+  color: white;
+  padding: 1.1em;
+}
+
+.menu_icon {
+  width: 70%;
+  margin: -3em;
+}
+
+.menu_icon_mobile {
+  width: 55%;
+  margin: -3em;
+}
+
+.cart_nav {
+  width: 65px;
+  height: 65px;
+}
+
+.tagline {
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  padding-top: 1em;
+  padding-bottom: 0.5em;
+}
+
+.map-div {
+  width: 100%;
+  margin: auto;
+}
+
+.other-map-div {
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  padding-top: 2em;
+}
+
+.to-menu-div {
+  width: 45%;
+  margin: auto;
+  padding-left: 3em;
+  padding-right: 3em;
+}
+
+.to-about-div {
+  width: 45%;
+  margin: auto;
+  padding-left: 3em;
+  padding-right: 3em;
+}
+
+#founder_pic {
+  width: 100%;
+}
+
+#to-menu-pic {
+  width: 100%;
+}
+
+.bottom_home_div {
+  display: flex;
+  justify-items: space-between;
+  text-align: center;
+  width: 65%;
+  margin: auto;
+  margin-top: 3em;
+}
+
+.nonchalant {
+  text-decoration: none;
+  color:rgb(23, 23, 23);
+}
+
+@media (max-width: 775px) {
+  .pizza-video {
+    width: 100%;
+    margin: auto;
+  }
+
+  .pizza-video-div {
+    width: 100%;
+    margin-top: 1em;
+    margin-bottom: 0.25em;
+  }
+
+  .tagline {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+  }
+
+  .to-menu-div {
+    width: 55%;
+    margin: auto;
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+  
+  .to-about-div {
+    width: 55%;
+    margin: auto;
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+
+  .bottom_home_div {
+    display: inline;
+    width: 100%;
+    margin: auto;
+    margin-top: 5em;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .pusher {
+      margin-left: 7.5em;
+    }
+
+    .menu {
+      text-decoration: none;
+      color: rgb(33, 37, 49);
+      text-shadow: none;
+      letter-spacing: 1.7px;
+    }
+
+    .menu_icon {
+      width: 75%;
+      margin: -3.25em;
+    }
+
+    .btn {
+      border: none;
+    }
+
+    .to-menu-div {
+      width: 75%;
+      margin: auto;
+      padding-left: 1em;
+      padding-right: 1em;
+    }
+    
+    .to-about-div {
+      width: 75%;
+      margin: auto;
+      padding-left: 1em;
+      padding-right: 1em;
+    }
+  
+    .bottom_home_div {
+      display: inline;
+      width: 100%;
+      margin: auto;
+      margin-top: 5em;
+    }
+  }
+}
