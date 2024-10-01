@@ -1,18 +1,50 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, Component } from "react";
+import Data from '../HOCs/Data';
 
-const CustomerContext = createContext({
-  message: 'hey'
-});
+export const Context = createContext({});
 
-const CustomerProvider = ({ children }) => {
-  const [message, setMessage] = useState('hey');
+export class Provider extends Component {
+  constructor() {
+    super();
+    this.data = new Data();
+    this.state = {
+      customer: {},
+      cart: [],
+      error: null, // Initialize error as null
+    };
+  }
 
-  return (
-    <CustomerContext.Provider value={{ message, setMessage }}>
-      {children}
-    </CustomerContext.Provider>
-  );
-};
+  // Method to fetch customer data
+  getCustomer = async () => {
+    try {
+      const customer = await this.data.getCustomer();
+      this.setState({ customer }); // Update state with the fetched customer data
+      return customer;
+    } catch (error) {
+      this.setState({ error });
+      console.error("Failed to fetch customer:", error); // Log the error for debugging
+    }
+  };
 
-// Export both the context and provider
-export { CustomerContext, CustomerProvider };
+  addCustom = (pizza) => {
+    this.setState((prevState) => ({
+      cart: [...prevState.cart, pizza]
+    }));
+  }
+
+  render() {
+    const value = {
+      ...this.state, // Spread the state directly
+      actions: {
+        getCustomer: this.getCustomer,
+        addCustom: this.addCustom
+      },
+    };
+
+    return (
+      <Context.Provider value={value}>
+        {this.props.children}
+      </Context.Provider>
+    );
+  }
+}

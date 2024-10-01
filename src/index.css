@@ -111,6 +111,74 @@ nav {
   color: rgb(80, 90, 100);
 }
 
+.byo_div {
+  width: 50%;
+  margin: auto;
+}
+
+.grid-item {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  border: 1px solid black;
+}
+
+.grid-item:hover {
+  transform: scale(1.15);
+  z-index: 10;
+}
+
+.card-img-top {
+  transition: transform 0.3s ease;
+  height: 200px;
+  object-fit: cover;
+}
+
+.grid-item:hover .card-img-top {
+  transform: scale(1.1);
+}
+
+.description {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  font-size: 0.8em;
+}
+
+.grid-item:hover .description {
+  opacity: 1;
+  margin: 0.5em 0;
+}
+
+.topping_label {
+  font-size: 1.2em;
+  padding: 0.25em;
+  font-family: sans-serif;
+}
+
+.add-to-cart-btn {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.grid-item:hover .add-to-cart-btn {
+  opacity: 1;
+  transform: translateX(-50%) scale(1.1);
+}
+
 /*
 ////////////////////
 HOME

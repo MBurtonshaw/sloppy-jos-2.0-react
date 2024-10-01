@@ -6,7 +6,7 @@ export default function Navbar() {
   const [mobileMode, setMobileMode] = useState(false);
 
   const updateMode = () => {
-    if (window.innerWidth < 775) {
+    if (window.innerWidth <= 779) {
       setDesktopMode(false);
       setTabletMode(false);
       setMobileMode(true);
