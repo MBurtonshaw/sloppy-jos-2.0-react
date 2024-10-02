@@ -2,11 +2,15 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Specialties from '../components/Specialties';
 import Sides from '../components/Sides';
+import {Context} from '../contexts/context.js';
+
 
 export default function Menu() {
+
   const [desktopMode, setDesktopMode] = useState(false);
   const [tabletMode, setTabletMode] = useState(false);
   const [mobileMode, setMobileMode] = useState(false);
+  const {actions} = useContext(Context);
 
   const updateMode = () => {
     if (window.innerWidth <= 779) {
@@ -32,6 +36,8 @@ export default function Menu() {
       window.removeEventListener("resize", updateMode); // Cleanup on unmount
     };
   }, []);
+
+
 
   if (desktopMode) {
     return (

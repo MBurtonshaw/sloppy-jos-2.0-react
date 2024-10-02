@@ -1,50 +1,74 @@
-import React, { createContext, Component } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import Data from '../HOCs/Data';
 
-export const Context = createContext({});
+export const Context = createContext();
 
-export class Provider extends Component {
-  constructor() {
-    super();
-    this.data = new Data();
-    this.state = {
-      customer: {},
-      cart: [],
-      error: null, // Initialize error as null
+export const Provider = ({ children }) => {
+  const data = new Data();
+
+  const [customer, setCustomer] = useState({});
+  const [cart, setCart] = useState(() => {
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? JSON.parse(savedCart) : {
+      specialtyPizzas: [],
+      customPizzas: [],
+      sides: []
     };
-  }
+  });
+  const [error, setError] = useState(null);
 
-  // Method to fetch customer data
-  getCustomer = async () => {
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart)); 
+  }, [cart]);
+
+  // Fetch customer data
+  const getCustomer = async () => {
     try {
-      const customer = await this.data.getCustomer();
-      this.setState({ customer }); // Update state with the fetched customer data
+      const customer = await data.getCustomer();
+      setCustomer(customer);
       return customer;
     } catch (error) {
-      this.setState({ error });
-      console.error("Failed to fetch customer:", error); // Log the error for debugging
+      setError(error);
+      console.error("Failed to fetch customer:", error);
     }
   };
 
-  addCustom = (pizza) => {
-    this.setState((prevState) => ({
-      cart: [...prevState.cart, pizza]
+  const addCustom = (pizza) => {
+    setCart((prevCart) => ({
+      ...prevCart,
+      customPizzas: [...prevCart.customPizzas, pizza],
     }));
-  }
+  };
 
-  render() {
-    const value = {
-      ...this.state, // Spread the state directly
-      actions: {
-        getCustomer: this.getCustomer,
-        addCustom: this.addCustom
-      },
-    };
+  const addSpecialty = (id) => {
+    setCart((prevCart) => ({
+      ...prevCart,
+      specialtyPizzas: [...prevCart.specialtyPizzas, id],
+    }));
+  };
 
-    return (
-      <Context.Provider value={value}>
-        {this.props.children}
-      </Context.Provider>
-    );
-  }
-}
+  const addSide = (id) => {
+    setCart((prevCart) => ({
+      ...prevCart,
+      sides: [...prevCart.sides, id],
+    }));
+  };
+
+  const value = {
+    customer,
+    cart,
+    error,
+    actions: {
+      getCustomer,
+      addCustom,
+      addSpecialty,
+      addSide,
+    },
+  };
+
+  return (
+    <Context.Provider value={value}>
+      {children}
+    </Context.Provider>
+  );
+};
