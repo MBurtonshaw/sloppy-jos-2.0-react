@@ -179,6 +179,11 @@ nav {
   transform: translateX(-50%) scale(1.1);
 }
 
+.custom-img {
+  width: 12.5%;
+  padding-bottom: 1.5em;
+}
+
 /*
 ////////////////////
 HOME
