@@ -22,16 +22,28 @@ export const Provider = ({ children }) => {
   }, [cart]);
 
   // Fetch customer data
-  const getCustomer = async () => {
-    try {
-      const customer = await data.getCustomer();
-      setCustomer(customer);
-      return customer;
-    } catch (error) {
-      setError(error);
-      console.error("Failed to fetch customer:", error);
-    }
-  };
+  // const getCustomer = async () => {
+  //   try {
+  //     const customer = await data.getCustomer();
+  //     setCustomer(customer);
+  //     return customer;
+  //   } catch (error) {
+  //     setError(error);
+  //     console.error("Failed to fetch customer:", error);
+  //   }
+  // };
+
+  const fillCustomer = async(customer) => {
+    setCustomer({
+      firstName: customer.customerFirstName,
+      lastName: customer.customerLastName,
+      email: customer.customerEmail,
+      phone: customer.customerPhone,
+      credit: customer.customerCreditCard,
+      creditExpiry: customer.customerCreditExpiry,
+      creditCVV: customer.customerCreditCVV
+    });
+  }
 
   const addCustom = (pizza) => {
     setCart((prevCart) => ({
@@ -54,15 +66,58 @@ export const Provider = ({ children }) => {
     }));
   };
 
+  const removeSpecialty = (idToRemove) => {
+    setCart((prevCart) => {
+      const index = prevCart.specialtyPizzas.indexOf(idToRemove);
+      if (index > -1) {
+        return {
+          ...prevCart,
+          specialtyPizzas: [
+            ...prevCart.specialtyPizzas.slice(0, index),
+            ...prevCart.specialtyPizzas.slice(index + 1)
+          ]
+        };
+      }
+      return prevCart;
+    });
+  };
+
+  const removeSide = (idToRemove) => {
+    setCart((prevCart) => {
+      const index = prevCart.sides.indexOf(idToRemove);
+      if (index > -1) {
+        return {
+          ...prevCart,
+          sides: [
+            ...prevCart.sides.slice(0, index),
+            ...prevCart.sides.slice(index + 1)
+          ]
+        };
+      }
+      return prevCart;
+    });
+  }
+  
+  const removeCustom = (pizzaId) => {
+    setCart((prevCart) => ({
+      ...prevCart,
+      customPizzas: prevCart.customPizzas.filter(pizza => pizza.id !== pizzaId),
+    }));
+  };
+
   const value = {
     customer,
     cart,
     error,
     actions: {
-      getCustomer,
+      // getCustomer,
       addCustom,
       addSpecialty,
       addSide,
+      fillCustomer,
+      removeSpecialty,
+      removeCustom,
+      removeSide
     },
   };
 

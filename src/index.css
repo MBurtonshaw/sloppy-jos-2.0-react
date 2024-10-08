@@ -165,6 +165,11 @@ nav {
   font-family: sans-serif;
 }
 
+.undercover {
+  list-style: none;
+  margin-left: -1.75em;
+}
+
 .add-to-cart-btn {
   position: absolute;
   bottom: 0px;
@@ -173,6 +178,12 @@ nav {
   opacity: 0;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
+
+.add_border_bottom {
+  border: 1px solid lightgray;
+  padding: 0.5em 0;
+}
+
 
 .grid-item:hover .add-to-cart-btn {
   opacity: 1;
@@ -253,6 +264,16 @@ HOME
   margin: auto;
   padding-left: 3em;
   padding-right: 3em;
+}
+
+.fake_anchor {
+  color: rgb(0, 114, 236);
+  margin-bottom: 0em;
+  text-decoration: underline;
+}
+
+.fake_anchor:hover {
+  cursor: pointer;
 }
 
 .to-about-div {

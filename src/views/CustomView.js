@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from "react";
-import {Context} from '../contexts/context.js';
+import { Context } from "../contexts/context.js";
 
 export default function Custom(props) {
-  const { actions, data} = useContext(Context);
+  const { actions, data } = useContext(Context);
 
   const availableToppings = [
     "Pepperoni",
@@ -28,8 +28,13 @@ export default function Custom(props) {
     "Sloppy Joe Sauce",
   ];
 
+  const currentDate = new Date();
+  const currentDay = currentDate.getDate();
+  const currentMonth = currentDate.getMonth() + 1;
+
   const addPizzaToCart = () => {
-    const pizza = { size, sauce, crust, toppings };
+    const pizza = { size, sauce, crust, toppings, price };
+    pizza.id = `Custom-${currentMonth}${currentDay}${price}`;
     actions.addCustom(pizza); // Call addCustom from context to add the pizza to the cart
   };
 
@@ -41,8 +46,29 @@ export default function Custom(props) {
     setCrust(event.target.value);
   };
 
+  const basePrices = {
+    "Small": 15,
+    "Medium": 18,
+    "Large": 22,
+    "Half-Sheet": 30,
+    "Full-Sheet": 37.5,
+  };
+
+  const [previousSize, setPreviousSize] = useState("Small"); // Initialize with a default size
+
   const handleSizeChange = (event) => {
-    setSize(event.target.value);
+    const newSize = event.target.value;
+    setPreviousSize(0);
+    // Get the price for the new size
+    const newSizePrice = basePrices[newSize]; // Assuming basePrices is defined as shown before
+    const previousSizePrice = basePrices[previousSize];
+  
+    // Update price by subtracting the previous size price and adding the new size price
+    setPrice((prevPrice) => prevPrice - previousSizePrice + newSizePrice);
+    
+    // Update the size and previous size states
+    setSize(newSize);
+    setPreviousSize(newSize); // Update previous size to the new one
   };
 
   const [desktopMode, setDesktopMode] = useState(false);
@@ -52,6 +78,7 @@ export default function Custom(props) {
   const [sauce, setSauce] = useState("Regular");
   const [crust, setCrust] = useState("Traditional");
   const [toppings, setToppings] = useState([]);
+  const [price, setPrice] = useState(15);
 
   const updateMode = () => {
     if (window.innerWidth <= 779) {
@@ -66,6 +93,16 @@ export default function Custom(props) {
       setDesktopMode(true);
       setTabletMode(false);
       setMobileMode(false);
+    }
+  };
+
+  const handleToppingChange = (topping) => {
+    if (toppings.includes(topping)) {
+      setToppings(toppings.filter((t) => t !== topping));
+      setPrice((prevPrice) => prevPrice - 1); // Subtract $1 for the topping
+    } else {
+      setToppings([...toppings, topping]);
+      setPrice((prevPrice) => prevPrice + 1); // Add $1 for the topping
     }
   };
 
@@ -85,7 +122,9 @@ export default function Custom(props) {
           <h2 className="text-center">Create Your Custom Sloppy Pizza</h2>
 
           <div className="container text-center pb-5">
-            <h4 className="text-left my-4 mt-5">Choose Your Sloppy Pizza Size</h4>
+            <h4 className="text-left my-4 mt-5">
+              Choose Your Sloppy Pizza Size
+            </h4>
             <div className="row justify-content-center">
               <div className="col-xs-6 col-sm-2">
                 <div className="card">
@@ -228,22 +267,10 @@ export default function Custom(props) {
                   <input
                     type="checkbox"
                     name={topping}
-                    value="topping"
-                    onClick={() => {
-                      if (toppings.includes(topping)) {
-                        setToppings(toppings.filter((t) => t !== topping));
-                      } else {
-                        setToppings([...toppings, topping]);
-                      }
-                    }}
+                    checked={toppings.includes(topping)} // Control the checkbox state
+                    onChange={() => handleToppingChange(topping)} // Use the updated handler
                   />
-                  <label
-                    className="px-1 topping_label"
-                    htmlFor={topping}
-                    value="topping"
-                  >
-                    {topping}
-                  </label>
+                  <label className="px-1 topping_label">{topping}</label>
                 </div>
               ))}
             </div>
@@ -269,7 +296,9 @@ export default function Custom(props) {
           <h2 className="text-center">Create Your Custom Sloppy Pizza</h2>
 
           <div className="container text-center pb-5">
-            <h4 className="text-left my-4 mt-5">Choose Your Sloppy Pizza Size</h4>
+            <h4 className="text-left my-4 mt-5">
+              Choose Your Sloppy Pizza Size
+            </h4>
             <div className="">
               <div className="card w-50 m-auto">
                 <img

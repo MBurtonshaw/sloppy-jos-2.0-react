@@ -61,8 +61,8 @@ export default function Specialties() {
           <div className="row justify-content-center">
             {renderCard("img/orderSloppyPizza-min.png", "Sloppy Joe Special", 25, "Loaded with seasoned ground beef, tangy tomato sauce, and a melty cheese blend that brings the classic Sloppy Joe to your plate", 1)}
             {renderCard("img/orderSupreme-min.png", "The Sloppy Supreme", 23, "Pepperoni, sausage, bell peppers, onions, and black olives, all layered over a rich tomato base and gooey mozzarella", 2)}
-            {renderCard("img/orderZestyTrio-min.png", "Jo's Zesty Trio", 23.50, "A bold combo of spicy pepperoni, earthy mushrooms, and fiery jalapeños, all on a bed of rich tomato sauce and bubbling cheese", 4)}
             {renderCard("img/orderMeatlovers-min.png", "Sloppy's Carnivore Delight", 22, "Piled high with pepperoni, sausage, ham, and bacon, all perfectly balanced by a hearty tomato sauce and melted cheese", 3)}
+            {renderCard("img/orderZestyTrio-min.png", "Jo's Zesty Trio", 23.50, "A bold combo of spicy pepperoni, earthy mushrooms, and fiery jalapeños, all on a bed of rich tomato sauce and bubbling cheese", 4)}
           </div>
         </div>
       </>
@@ -80,8 +80,8 @@ export default function Specialties() {
           <div className="row justify-content-center">
             {renderCard("img/orderSloppyPizza-min.png", "Sloppy Joe Special", 25, "Loaded with seasoned ground beef, tangy tomato sauce, and a melty cheese blend that brings the classic Sloppy Joe to your plate", 1)}
             {renderCard("img/orderSupreme-min.png", "The Sloppy Supreme", 23, "Pepperoni, sausage, bell peppers, onions, and black olives, all layered over a rich tomato base and gooey mozzarella", 2)}
-            {renderCard("img/orderZestyTrio-min.png", "Jo's Zesty Trio", 23.50, "A bold combo of spicy pepperoni, earthy mushrooms, and fiery jalapeños, all on a bed of rich tomato sauce and bubbling cheese", 4)}
             {renderCard("img/orderMeatlovers-min.png", "Sloppy's Carnivore Delight", 22, "Piled high with pepperoni, sausage, ham, and bacon, all perfectly balanced by a hearty tomato sauce and melted cheese", 3)}
+            {renderCard("img/orderZestyTrio-min.png", "Jo's Zesty Trio", 23.50, "A bold combo of spicy pepperoni, earthy mushrooms, and fiery jalapeños, all on a bed of rich tomato sauce and bubbling cheese", 4)}
           </div>
         </div>
       </>

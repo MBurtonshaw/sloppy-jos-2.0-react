@@ -1,9 +1,11 @@
 import { useState, useContext, useEffect } from "react";
 import { Context } from "../contexts/context.js";
+import { useNavigate } from "react-router-dom";
 
 export default function CustomerInfo() {
   const { actions } = useContext(Context);
-  const [customerName, setCustomerName] = useState(null);
+  const [customerFirstName, setCustomerFirstName] = useState(null);
+  const [customerLastName, setCustomerLastName] = useState(null);
   const [customerEmail, setCustomerEmail] = useState(null);
   const [customerPhone, setCustomerPhone] = useState(null);
   const [customerCreditCard, setCustomerCreditCard] = useState(null);
@@ -13,6 +15,17 @@ export default function CustomerInfo() {
   const [desktopMode, setDesktopMode] = useState(false);
   const [tabletMode, setTabletMode] = useState(false);
   const [mobileMode, setMobileMode] = useState(false);
+  const customer = {
+    customerFirstName,
+    customerLastName,
+    customerEmail,
+    customerPhone,
+    customerCreditCard,
+    customerCreditExpiry,
+    customerCreditCVV
+  }
+
+  const navigate = useNavigate();
 
   const updateMode = () => {
     if (window.innerWidth <= 779) {
@@ -39,9 +52,14 @@ export default function CustomerInfo() {
     };
   }, []);
 
-  function handleNameChange() {
-    let name = document.getElementById("customerName");
-    setCustomerName(name.value);
+  function handleFirstNameChange() {
+    let name = document.getElementById("customerFirstName");
+    setCustomerFirstName(name.value);
+  }
+
+  function handleLastNameChange() {
+    let name = document.getElementById("customerLastName");
+    setCustomerLastName(name.value);
   }
 
   function handleEmailChange() {
@@ -67,6 +85,29 @@ export default function CustomerInfo() {
   function handleCreditCVVChange() {
     let CVV = document.getElementById("creditCardCVV");
     setCustomerCreditCVV(CVV.value);
+  }
+
+  async function handleSubmit() {
+    if (!customer.customerFirstName) {
+      window.alert('Please enter a first name');
+    } else if (!customer.customerLastName) {
+      window.alert('Please enter a last name');
+    } else if (!customer.customerEmail) {
+      window.alert('Please enter an email address');
+    } else if (!customer.customerPhone) {
+      window.alert('Please enter a phone number');
+    } else if (!customer.customerCreditCard) {
+      window.alert('Please enter a credit card number');
+    } else if (!customer.customerCreditExpiry) {
+      window.alert('Please enter credit card expiration date');
+    } else if (!customer.customerCreditCVV) {
+      window.alert('Please enter credit card CVV');
+    } else if (delivery === "") {
+      window.alert('Please enter delivery or takeout');
+    } else {
+      await actions.fillCustomer(customer);
+      navigate('/receipt');
+    }
   }
 
   const renderAddressField = () => {
@@ -150,15 +191,29 @@ export default function CustomerInfo() {
                 <tbody>
                   <tr>
                     <td>
-                      <label htmlFor="customerName">Name:</label>
+                      <label htmlFor="customerFirstName">First Name:</label>
                     </td>
                     <td>
                       <input
                         type="text"
                         className="form-control"
-                        id="customerName"
+                        id="customerFirstName"
                         placeholder=""
-                        onChange={() => handleNameChange()}
+                        onChange={() => handleFirstNameChange()}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label htmlFor="customerLastName">Last Name:</label>
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="customerLastName"
+                        placeholder=""
+                        onChange={() => handleLastNameChange()}
                       />
                     </td>
                   </tr>
@@ -272,14 +327,9 @@ export default function CustomerInfo() {
           </div>
         </div>
         <div className="submit text-center">
-          <p>Click Me to Place the Order!</p>
-          <a href={"/receipt"}>
-            <img
-              src="img/spLogo2.png"
-              alt="Joe's Sloppy Head"
-              className="custom-img"
-            />
-          </a>
+          <button className='px-5 py-2 mt-2 mb-4' type="button" onClick={handleSubmit}>
+            Place Order
+          </button>
         </div>
       </>
     );
@@ -294,13 +344,24 @@ export default function CustomerInfo() {
           <div className="mb-4">
             <form className="w-75 m-auto">
               <div className="py-4">
-                <label htmlFor="customerName">Name:</label>
+                <label htmlFor="customerFirstName">First Name:</label>
                 <input
                   type="text"
                   className="form-control"
-                  id="customerName"
+                  id="customerFirstName"
                   placeholder=""
-                  onChange={() => handleNameChange()}
+                  onChange={() => handleFirstNameChange()}
+                />
+              </div>
+
+              <div className="py-4">
+                <label htmlFor="customerLastName">Last Name:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="customerLastName"
+                  placeholder=""
+                  onChange={() => handleLastNameChange()}
                 />
               </div>
 
@@ -402,14 +463,9 @@ export default function CustomerInfo() {
           {renderAddressField()}
         </div>
         <div className="submit text-center">
-          <p>Click Me to Place the Order!</p>
-          <a href={"/receipt"}>
-            <img
-              src="img/spLogo2.png"
-              alt="Joe's Sloppy Head"
-              className="custom-img"
-            />
-          </a>
+          <button className='px-5 py-2 mb-4' onClick={handleSubmit}>
+            Place Order
+          </button>
         </div>
       </>
     );
