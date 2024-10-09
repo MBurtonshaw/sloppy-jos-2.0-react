@@ -37,15 +37,24 @@ export const Provider = ({ children }) => {
   // };
 
   const fillCustomer = async (customer) => {
-    setCustomer({
-      firstName: customer.customerFirstName,
-      lastName: customer.customerLastName,
-      email: customer.customerEmail,
-      phone: customer.customerPhone,
-      credit: customer.customerCreditCard,
-      creditExpiry: customer.customerCreditExpiry,
-      creditCVV: customer.customerCreditCVV,
-    });
+    try {
+      // Format phone number and credit card to remove non-digit characters
+      const formattedPhone = customer.customerPhone.replace(/\D/g, ''); // Remove non-digit characters
+      const formattedCreditCard = customer.customerCreditCard.replace(/\D/g, ''); // Remove non-digit characters
+  
+      setCustomer({
+        firstName: customer.customerFirstName,
+        lastName: customer.customerLastName,
+        email: customer.customerEmail,
+        phone: formattedPhone,
+        credit: formattedCreditCard,
+        creditExpiry: customer.customerCreditExpiry,
+        creditCVV: customer.customerCreditCVV,
+      });
+    } catch (error) {
+      console.error("Error filling customer data:", error);
+      // Optionally, handle errors (e.g., show a message to the user)
+    }
   };
 
   const calculateTotal = (cart) => {

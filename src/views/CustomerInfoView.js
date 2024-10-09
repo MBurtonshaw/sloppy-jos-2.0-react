@@ -3,7 +3,7 @@ import { Context } from "../contexts/context.js";
 import { useNavigate } from "react-router-dom";
 
 export default function CustomerInfo() {
-  const { actions } = useContext(Context);
+  const { actions, cart } = useContext(Context);
   const [customerFirstName, setCustomerFirstName] = useState(null);
   const [customerLastName, setCustomerLastName] = useState(null);
   const [customerEmail, setCustomerEmail] = useState(null);
@@ -22,8 +22,14 @@ export default function CustomerInfo() {
     customerPhone,
     customerCreditCard,
     customerCreditExpiry,
-    customerCreditCVV
-  }
+    customerCreditCVV,
+  };
+
+  const phoneRegEx = new RegExp(
+    "^(\\+0?1\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$"
+  );
+  const creditCardRegEx = new RegExp("^(?:\\d{4}[-\\s]?){3}\\d{4}$");
+  const cvvRegEx = new RegExp("^\\d{3}$");
 
   const navigate = useNavigate();
 
@@ -89,24 +95,33 @@ export default function CustomerInfo() {
 
   async function handleSubmit() {
     if (!customer.customerFirstName) {
-      window.alert('Please enter a first name');
+      window.alert("Please enter a first name");
     } else if (!customer.customerLastName) {
-      window.alert('Please enter a last name');
+      window.alert("Please enter a last name");
     } else if (!customer.customerEmail) {
-      window.alert('Please enter an email address');
-    } else if (!customer.customerPhone) {
-      window.alert('Please enter a phone number');
-    } else if (!customer.customerCreditCard) {
-      window.alert('Please enter a credit card number');
+      window.alert("Please enter a valid email address");
+    } else if (
+      !customer.customerPhone ||
+      !phoneRegEx.test(customer.customerPhone)
+    ) {
+      window.alert("Please enter a valid US phone number - 10 digits");
+    } else if (
+      !customer.customerCreditCard ||
+      !creditCardRegEx.test(customerCreditCard)
+    ) {
+      window.alert("Please enter a valid 16-digit credit card number");
     } else if (!customer.customerCreditExpiry) {
-      window.alert('Please enter credit card expiration date');
-    } else if (!customer.customerCreditCVV) {
-      window.alert('Please enter credit card CVV');
+      window.alert("Please enter credit card expiration date");
+    } else if (
+      !customer.customerCreditCVV ||
+      !cvvRegEx.test(customerCreditCVV)
+    ) {
+      window.alert("Please enter a valid 3-digit credit card CVV");
     } else if (delivery === "") {
-      window.alert('Please enter delivery or takeout');
+      window.alert("Please enter delivery or takeout");
     } else {
       await actions.fillCustomer(customer);
-      navigate('/receipt');
+      navigate("/receipt");
     }
   }
 
@@ -115,61 +130,111 @@ export default function CustomerInfo() {
       if (desktopMode) {
         return (
           <>
-          <tr>
-            <td>
-              <label htmlFor="streetAddress">Street Address:</label>
-            </td>
-            <td>
-              <input className='w-100 m-auto form-control' id="streetAddress"></input>
-            </td>
-          </tr>
-          <tr>
-          <td>
-            <label htmlFor="unitNumber">Unit # (optional):</label>
-          </td>
-          <td>
-            <input className='w-100 m-auto form-control' id="unitNumber"></input>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label htmlFor="addressCity">City:</label>
-          </td>
-          <td>
-            <input className='w-100 m-auto form-control' id="addressCity"></input>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label htmlFor="addressState">State Abbreviation:</label>
-          </td>
-          <td>
-            <input className='w-100 m-auto form-control' id="addressState"></input>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label htmlFor="addressZip">ZIP Code:</label>
-          </td>
-          <td>
-            <input className='w-100 m-auto form-control' id="addressZip"></input>
-          </td>
-        </tr>
-        </>
+            <tr>
+              <td>
+                <label htmlFor="streetAddress">Street Address:</label>
+              </td>
+              <td>
+                <input
+                  className="w-100 m-auto form-control"
+                  id="streetAddress"
+                ></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor="unitNumber">Unit # (optional):</label>
+              </td>
+              <td>
+                <input
+                  className="w-100 m-auto form-control"
+                  id="unitNumber"
+                ></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor="addressCity">City:</label>
+              </td>
+              <td>
+                <input
+                  className="w-100 m-auto form-control"
+                  id="addressCity"
+                ></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor="addressState">State Abbreviation:</label>
+              </td>
+              <td>
+                <input
+                  className="w-100 m-auto form-control"
+                  id="addressState"
+                ></input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label htmlFor="addressZip">ZIP Code:</label>
+              </td>
+              <td>
+                <input
+                  className="w-100 m-auto form-control"
+                  id="addressZip"
+                ></input>
+              </td>
+            </tr>
+          </>
         );
       } else {
         return (
-          <div className='w-75 m-auto pt-4'>
-            <label className='px-2 w-75 m-auto' htmlFor="streetAddress">Street Address:</label>
-            <input className='w-75 m-auto form-control' name='streetAddress' id='streetAddress' type='text'></input>
-            <label className='px-2 w-75 m-auto pt-3' htmlFor="unitNumber">Unit # (optional):</label>
-            <input className='w-75 m-auto form-control'name='unitNumber' id='unitNumber' type='text'></input>
-            <label className='px-2 w-75 m-auto pt-3' htmlFor="adddressCity">City:</label>
-            <input className='w-75 m-auto form-control'name='adddressCity' id='adddressCity' type='text'></input>
-            <label className='px-2 w-75 m-auto pt-3' htmlFor="addressState">State Abbreviation:</label>
-            <input className='w-75 m-auto form-control'name='addressState' id='addressState' type='text'></input>
-            <label className='px-2 w-75 m-auto pt-3' htmlFor="addressZip">ZIP Code:</label>
-            <input className='w-75 m-auto form-control'name='addressZip' id='addressZip' type='text'></input>
+          <div className="w-75 m-auto pt-4">
+            <label className="px-2 w-75 m-auto" htmlFor="streetAddress">
+              Street Address:
+            </label>
+            <input
+              className="w-75 m-auto form-control"
+              name="streetAddress"
+              id="streetAddress"
+              type="text"
+            ></input>
+            <label className="px-2 w-75 m-auto pt-3" htmlFor="unitNumber">
+              Unit # (optional):
+            </label>
+            <input
+              className="w-75 m-auto form-control"
+              name="unitNumber"
+              id="unitNumber"
+              type="text"
+            ></input>
+            <label className="px-2 w-75 m-auto pt-3" htmlFor="adddressCity">
+              City:
+            </label>
+            <input
+              className="w-75 m-auto form-control"
+              name="addressCity"
+              id="addressCity"
+              type="text"
+            ></input>
+            <label className="px-2 w-75 m-auto pt-3" htmlFor="addressState">
+              State Abbreviation:
+            </label>
+            <input
+              className="w-75 m-auto form-control"
+              name="addressState"
+              id="addressState"
+              type="text"
+            ></input>
+            <label className="px-2 w-75 m-auto pt-3" htmlFor="addressZip">
+              ZIP Code:
+            </label>
+            <input
+              className="w-75 m-auto form-control"
+              name="addressZip"
+              id="addressZip"
+              type="text"
+            ></input>
           </div>
         );
       }
@@ -186,7 +251,7 @@ export default function CustomerInfo() {
           </h1>
           <div className="mb-4">
             <form>
-              <h2 className="text-end">Total : $</h2>
+              <h2 className="text-end">{`Total: $${cart.total}`}</h2>
               <table className="table">
                 <tbody>
                   <tr>
@@ -240,7 +305,7 @@ export default function CustomerInfo() {
                         type="tel"
                         className="form-control"
                         id="customerPhone"
-                        placeholder=""
+                        placeholder="000-000-0000"
                         onChange={() => handlePhoneChange()}
                       />
                     </td>
@@ -258,10 +323,11 @@ export default function CustomerInfo() {
                     </td>
                     <td>
                       <input
-                        type="text"
+                        type="tel"
                         className="form-control"
                         id="creditCardNumber"
-                        placeholder=""
+                        placeholder="xxxx-xxxx-xxxx-xxxx"
+                        maxLength="20"
                         onChange={() => handleCreditCardChange()}
                       />
                     </td>
@@ -272,7 +338,7 @@ export default function CustomerInfo() {
                     </td>
                     <td>
                       <input
-                        type="text"
+                        type="date"
                         className="form-control"
                         id="creditCardExpiry"
                         placeholder=""
@@ -289,7 +355,8 @@ export default function CustomerInfo() {
                         type="text"
                         className="form-control"
                         id="creditCardCVV"
-                        placeholder=""
+                        placeholder="xxx"
+                        maxLength="3"
                         onChange={() => handleCreditCVVChange()}
                       />
                     </td>
@@ -327,7 +394,11 @@ export default function CustomerInfo() {
           </div>
         </div>
         <div className="submit text-center">
-          <button className='px-5 py-2 mt-2 mb-4' type="button" onClick={handleSubmit}>
+          <button
+            className="px-5 py-2 mt-2 mb-4"
+            type="button"
+            onClick={handleSubmit}
+          >
             Place Order
           </button>
         </div>
@@ -340,14 +411,14 @@ export default function CustomerInfo() {
       <>
         <div className="w-100 m-auto text-center">
           <h1 className="customer-information my-5">Customer Information</h1>
-          <h2 className="text-end mx-5">Total : $</h2>
+          <h2 className="text-center">{`Total: $${cart.total}`}</h2>
           <div className="mb-4">
             <form className="w-75 m-auto">
               <div className="py-4">
                 <label htmlFor="customerFirstName">First Name:</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="form-control text-center"
                   id="customerFirstName"
                   placeholder=""
                   onChange={() => handleFirstNameChange()}
@@ -358,7 +429,7 @@ export default function CustomerInfo() {
                 <label htmlFor="customerLastName">Last Name:</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="form-control text-center"
                   id="customerLastName"
                   placeholder=""
                   onChange={() => handleLastNameChange()}
@@ -371,7 +442,7 @@ export default function CustomerInfo() {
                 </label>
                 <input
                   type="email"
-                  className="form-control"
+                  className="form-control text-center"
                   id="customerEmail"
                   placeholder=""
                   onChange={() => handleEmailChange()}
@@ -384,9 +455,9 @@ export default function CustomerInfo() {
                 </label>
                 <input
                   type="tel"
-                  className="form-control"
+                  className="form-control text-center"
                   id="customerPhone"
-                  placeholder=""
+                  placeholder="000-000-0000"
                   onChange={() => handlePhoneChange()}
                 />
               </div>
@@ -396,10 +467,11 @@ export default function CustomerInfo() {
                   Credit Card Number:
                 </label>
                 <input
-                  type="text"
-                  className="form-control"
+                  type="tel"
+                  className="form-control text-center"
                   id="creditCardNumber"
-                  placeholder=""
+                  placeholder="xxxx-xxxx-xxxx-xxxx"
+                  maxLength="20"
                   onChange={() => handleCreditCardChange()}
                 />
               </div>
@@ -409,8 +481,8 @@ export default function CustomerInfo() {
                   Expiry Date:
                 </label>
                 <input
-                  type="text"
-                  className="form-control"
+                  type="date"
+                  className="form-control text-center"
                   id="creditCardExpiry"
                   placeholder=""
                   onChange={() => handleCreditExpiryChange()}
@@ -423,9 +495,10 @@ export default function CustomerInfo() {
                 </label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="form-control text-center"
                   id="creditCardCVV"
-                  placeholder=""
+                  placeholder="xxx"
+                  maxLength="3"
                   onChange={() => handleCreditCVVChange()}
                 />
               </div>
@@ -458,12 +531,11 @@ export default function CustomerInfo() {
                 onClick={() => setDelivery(false)}
               />
             </div>
-            
           </div>
           {renderAddressField()}
         </div>
         <div className="submit text-center">
-          <button className='px-5 py-2 mb-4' onClick={handleSubmit}>
+          <button className="px-5 py-2 mb-4" onClick={handleSubmit}>
             Place Order
           </button>
         </div>

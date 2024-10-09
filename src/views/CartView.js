@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { Context } from "../contexts/context.js";
 
 export default function Cart() {
@@ -6,6 +7,7 @@ export default function Cart() {
   const specialties = cart.specialtyPizzas;
   const customs = cart.customPizzas;
   const sides = cart.sides;
+  const navigate = useNavigate();
 
   const [desktopMode, setDesktopMode] = useState(false);
   const [tabletMode, setTabletMode] = useState(false);
@@ -125,7 +127,7 @@ export default function Cart() {
           {showSidesHeader()}
           {mapSidesMobile()}
           <div className="text-center mt-3">
-            <button className="px-5 py-2 mt-3 mb-5">Submit Order</button>
+            <button className="px-5 py-2 mt-3 mb-5" onClick={() => navigate('/customer_info')}>Place Order</button>
           </div>
         </div>
       </>
@@ -144,7 +146,7 @@ export default function Cart() {
         {showSidesHeader()}
         {mapSidesMobile()}
         <div className="text-center mt-3">
-          <button className="px-5 py-2 mt-3 mb-5">Submit Order</button>
+          <button className="px-5 py-2 mt-3 mb-5" onClick={() => navigate('/customer_info')}>Place Order</button>
         </div>
       </div>
     </>
