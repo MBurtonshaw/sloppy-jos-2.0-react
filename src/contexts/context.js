@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import Data from '../HOCs/Data';
+import Data from "../HOCs/Data";
 
 export const Context = createContext();
 
@@ -8,17 +8,20 @@ export const Provider = ({ children }) => {
 
   const [customer, setCustomer] = useState({});
   const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : {
-      specialtyPizzas: [],
-      customPizzas: [],
-      sides: []
-    };
+    const savedCart = localStorage.getItem("cart");
+    return savedCart
+      ? JSON.parse(savedCart)
+      : {
+          specialtyPizzas: [],
+          customPizzas: [],
+          sides: [],
+          total: 0,
+        };
   });
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart)); 
+    localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
   // Fetch customer data
@@ -33,7 +36,7 @@ export const Provider = ({ children }) => {
   //   }
   // };
 
-  const fillCustomer = async(customer) => {
+  const fillCustomer = async (customer) => {
     setCustomer({
       firstName: customer.customerFirstName,
       lastName: customer.customerLastName,
@@ -41,68 +44,238 @@ export const Provider = ({ children }) => {
       phone: customer.customerPhone,
       credit: customer.customerCreditCard,
       creditExpiry: customer.customerCreditExpiry,
-      creditCVV: customer.customerCreditCVV
+      creditCVV: customer.customerCreditCVV,
     });
-  }
+  };
+
+  const calculateTotal = (cart) => {
+    const specialtyTotal = cart.specialtyPizzas.reduce(
+      (sum, pizza) => sum + pizza.price * (pizza.quantity || 1),
+      0
+    );
+    const customTotal = cart.customPizzas.reduce(
+      (sum, pizza) => sum + pizza.price * (pizza.quantity || 1),
+      0
+    );
+    const sidesTotal = cart.sides.reduce(
+      (sum, side) => sum + side.price * (side.quantity || 1),
+      0
+    );
+
+    return specialtyTotal + customTotal + sidesTotal;
+  };
 
   const addCustom = (pizza) => {
-    setCart((prevCart) => ({
-      ...prevCart,
-      customPizzas: [...prevCart.customPizzas, pizza],
-    }));
+    setCart((prevCart) => {
+      const existingPizza = prevCart.customPizzas.find(
+        (p) => p.id === pizza.id
+      );
+
+      if (existingPizza) {
+        // Increment the quantity of the existing pizza
+        return {
+          ...prevCart,
+          customPizzas: prevCart.customPizzas.map((p) =>
+            p.id === pizza.id ? { ...p, quantity: (p.quantity || 1) + 1 } : p
+          ),
+          total: calculateTotal({
+            ...prevCart,
+            customPizzas: prevCart.customPizzas.map((p) =>
+              p.id === pizza.id ? { ...p, quantity: (p.quantity || 1) + 1 } : p
+            ),
+          }),
+        };
+      }
+
+      // If it's a new pizza, add it with a quantity of 1
+      return {
+        ...prevCart,
+        customPizzas: [...prevCart.customPizzas, { ...pizza, quantity: 1 }],
+        total: calculateTotal({
+          ...prevCart,
+          customPizzas: [...prevCart.customPizzas, { ...pizza, quantity: 1 }],
+        }),
+      };
+    });
   };
 
-  const addSpecialty = (id) => {
-    setCart((prevCart) => ({
-      ...prevCart,
-      specialtyPizzas: [...prevCart.specialtyPizzas, id],
-    }));
+  const addSpecialty = (id, title, price) => {
+    setCart((prevCart) => {
+      const existingSpecialty = prevCart.specialtyPizzas.find(
+        (pizza) => pizza.id === id
+      );
+
+      if (existingSpecialty) {
+        // Increment the quantity of the existing specialty pizza
+        const updatedSpecialties = prevCart.specialtyPizzas.map((pizza) =>
+          pizza.id === id
+            ? { ...pizza, quantity: (pizza.quantity || 1) + 1 }
+            : pizza
+        );
+
+        return {
+          ...prevCart,
+          specialtyPizzas: updatedSpecialties,
+          total: calculateTotal({
+            ...prevCart,
+            specialtyPizzas: updatedSpecialties,
+          }), // Recalculate total
+        };
+      }
+
+      // If it's a new specialty pizza, add it with a quantity of 1
+      return {
+        ...prevCart,
+        specialtyPizzas: [
+          ...prevCart.specialtyPizzas,
+          { id, title, price, quantity: 1 },
+        ],
+        total: calculateTotal({
+          ...prevCart,
+          specialtyPizzas: [
+            ...prevCart.specialtyPizzas,
+            { id, title, price, quantity: 1 },
+          ],
+        }),
+      };
+    });
   };
 
-  const addSide = (id) => {
-    setCart((prevCart) => ({
-      ...prevCart,
-      sides: [...prevCart.sides, id],
-    }));
+  const addSide = (id, title, price) => {
+    setCart((prevCart) => {
+      const existingSide = prevCart.sides.find((s) => s.id === id);
+
+      if (existingSide) {
+        // Increment the quantity of the existing side
+        const updatedSides = prevCart.sides.map((s) =>
+          s.id === id ? { ...s, quantity: (s.quantity || 1) + 1 } : s
+        );
+
+        return {
+          ...prevCart,
+          sides: updatedSides,
+          total: calculateTotal({ ...prevCart, sides: updatedSides }), // Recalculate total
+        };
+      }
+
+      // If it's a new side, add it with a quantity of 1
+      return {
+        ...prevCart,
+        sides: [...prevCart.sides, { id, title, price, quantity: 1 }],
+        total: calculateTotal({
+          ...prevCart,
+          sides: [...prevCart.sides, { id, title, price, quantity: 1 }],
+        }),
+      };
+    });
   };
 
   const removeSpecialty = (idToRemove) => {
     setCart((prevCart) => {
-      const index = prevCart.specialtyPizzas.indexOf(idToRemove);
-      if (index > -1) {
+      const specialtyToRemove = prevCart.specialtyPizzas.find(
+        (pizza) => pizza.id === idToRemove
+      );
+
+      if (specialtyToRemove && specialtyToRemove.quantity > 1) {
+        // Decrement quantity if more than 1
+        const updatedSpecialties = prevCart.specialtyPizzas.map((pizza) =>
+          pizza.id === idToRemove
+            ? { ...pizza, quantity: pizza.quantity - 1 }
+            : pizza
+        );
+
         return {
           ...prevCart,
-          specialtyPizzas: [
-            ...prevCart.specialtyPizzas.slice(0, index),
-            ...prevCart.specialtyPizzas.slice(index + 1)
-          ]
+          specialtyPizzas: updatedSpecialties,
+          total: calculateTotal({
+            ...prevCart,
+            specialtyPizzas: updatedSpecialties,
+          }), // Recalculate total
         };
       }
-      return prevCart;
+
+      // Remove the specialty pizza if quantity is 1
+      const filteredSpecialties = prevCart.specialtyPizzas.filter(
+        (pizza) => pizza.id !== idToRemove
+      );
+
+      return {
+        ...prevCart,
+        specialtyPizzas: filteredSpecialties,
+        total: calculateTotal({
+          ...prevCart,
+          specialtyPizzas: filteredSpecialties,
+        }), // Recalculate total
+      };
     });
   };
 
   const removeSide = (idToRemove) => {
     setCart((prevCart) => {
-      const index = prevCart.sides.indexOf(idToRemove);
-      if (index > -1) {
+      const sideToRemove = prevCart.sides.find(
+        (side) => side.id === idToRemove
+      );
+
+      if (sideToRemove && sideToRemove.quantity > 1) {
+        // Decrement quantity if more than 1
+        const updatedSides = prevCart.sides.map((side) =>
+          side.id === idToRemove
+            ? { ...side, quantity: side.quantity - 1 }
+            : side
+        );
+
         return {
           ...prevCart,
-          sides: [
-            ...prevCart.sides.slice(0, index),
-            ...prevCart.sides.slice(index + 1)
-          ]
+          sides: updatedSides,
+          total: calculateTotal({ ...prevCart, sides: updatedSides }), // Recalculate total
         };
       }
-      return prevCart;
+
+      // Remove the side if quantity is 1
+      const filteredSides = prevCart.sides.filter(
+        (side) => side.id !== idToRemove
+      );
+
+      return {
+        ...prevCart,
+        sides: filteredSides,
+        total: calculateTotal({ ...prevCart, sides: filteredSides }), // Recalculate total
+      };
     });
-  }
-  
-  const removeCustom = (pizzaId) => {
-    setCart((prevCart) => ({
-      ...prevCart,
-      customPizzas: prevCart.customPizzas.filter(pizza => pizza.id !== pizzaId),
-    }));
+  };
+
+  const removeCustom = (idToRemove) => {
+    setCart((prevCart) => {
+      const pizzaToRemove = prevCart.customPizzas.find(
+        (pizza) => pizza.id === idToRemove
+      );
+
+      if (pizzaToRemove && pizzaToRemove.quantity > 1) {
+        // Decrement quantity if more than 1
+        const updatedPizzas = prevCart.customPizzas.map((pizza) =>
+          pizza.id === idToRemove
+            ? { ...pizza, quantity: pizza.quantity - 1 }
+            : pizza
+        );
+
+        return {
+          ...prevCart,
+          customPizzas: updatedPizzas,
+          total: calculateTotal({ ...prevCart, customPizzas: updatedPizzas }), // Recalculate total
+        };
+      }
+
+      // Remove the pizza if quantity is 1
+      const filteredPizzas = prevCart.customPizzas.filter(
+        (pizza) => pizza.id !== idToRemove
+      );
+
+      return {
+        ...prevCart,
+        customPizzas: filteredPizzas,
+        total: calculateTotal({ ...prevCart, customPizzas: filteredPizzas }), // Recalculate total
+      };
+    });
   };
 
   const value = {
@@ -117,13 +290,9 @@ export const Provider = ({ children }) => {
       fillCustomer,
       removeSpecialty,
       removeCustom,
-      removeSide
+      removeSide,
     },
   };
 
-  return (
-    <Context.Provider value={value}>
-      {children}
-    </Context.Provider>
-  );
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };

@@ -47,9 +47,9 @@ export default function Custom(props) {
   };
 
   const basePrices = {
-    "Small": 15,
-    "Medium": 18,
-    "Large": 22,
+    Small: 15,
+    Medium: 18,
+    Large: 22,
     "Half-Sheet": 30,
     "Full-Sheet": 37.5,
   };
@@ -62,10 +62,10 @@ export default function Custom(props) {
     // Get the price for the new size
     const newSizePrice = basePrices[newSize]; // Assuming basePrices is defined as shown before
     const previousSizePrice = basePrices[previousSize];
-  
+
     // Update price by subtracting the previous size price and adding the new size price
     setPrice((prevPrice) => prevPrice - previousSizePrice + newSizePrice);
-    
+
     // Update the size and previous size states
     setSize(newSize);
     setPreviousSize(newSize); // Update previous size to the new one
@@ -139,6 +139,7 @@ export default function Custom(props) {
                       type="radio"
                       name="size"
                       value="Small"
+                      defaultChecked={true}
                       onChange={handleSizeChange}
                     />
                   </div>
