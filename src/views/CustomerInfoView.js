@@ -120,8 +120,19 @@ export default function CustomerInfo() {
     } else if (delivery === "") {
       window.alert("Please enter delivery or takeout");
     } else {
+      const customer = {
+        customerFirstName,
+        customerLastName,
+        customerEmail,
+        customerPhone,
+        customerCreditCard,
+        customerCreditExpiry,
+        customerCreditCVV,
+      };
+    
+      console.log("Submitting Customer:", customer); // Log right before submission
       await actions.fillCustomer(customer);
-      await actions.submitOrder();
+      await actions.submitCustomer(customer);
       navigate("/receipt");
     }
   }
@@ -252,7 +263,6 @@ export default function CustomerInfo() {
           </h1>
           <div className="mb-4">
             <form>
-              <h2 className="text-end">{`Total: $${cart.total}`}</h2>
               <table className="table">
                 <tbody>
                   <tr>
@@ -412,7 +422,6 @@ export default function CustomerInfo() {
       <>
         <div className="w-100 m-auto text-center">
           <h1 className="customer-information my-5">Customer Information</h1>
-          <h2 className="text-center">{`Total: $${cart.total}`}</h2>
           <div className="mb-4">
             <form className="w-75 m-auto">
               <div className="py-4">

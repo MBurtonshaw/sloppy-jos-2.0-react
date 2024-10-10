@@ -9,14 +9,29 @@ export const Provider = ({ children }) => {
   const [customer, setCustomer] = useState({});
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem("cart");
-    return savedCart
-      ? JSON.parse(savedCart)
-      : {
-          specialtyPizzas: [],
-          customPizzas: [],
-          sides: [],
-          total: 0,
-        };
+    if (savedCart) {
+      try {
+        const parsedCart = JSON.parse(savedCart);
+        // Check if the structure is correct
+        if (
+          parsedCart &&
+          Array.isArray(parsedCart.specialtyPizzas) &&
+          Array.isArray(parsedCart.customPizzas) &&
+          Array.isArray(parsedCart.sides)
+        ) {
+          return parsedCart; // return the parsed cart if it's valid
+        }
+      } catch (error) {
+        console.error("Failed to parse cart from local storage", error);
+      }
+    }
+    // Return the default structure if nothing is found
+    return {
+      specialtyPizzas: [],
+      customPizzas: [],
+      sides: [],
+      total: 0,
+    };
   });
   const [error, setError] = useState(null);
 
@@ -287,7 +302,31 @@ export const Provider = ({ children }) => {
   };
 
   async function submitOrder() {
-    await data.submitOrder(cart);
+    await data.addSpecialties(cart);
+    await data.addCustoms(cart);
+    await data.addSides(cart);
+    await data.setPrice(cart)
+      .then(response => {
+        console.log('Price added successfully:', response);
+        // Reset the cart state
+        setCart({
+          specialtyPizzas: [],
+          customPizzas: [],
+          sides: [],
+          total: 0,
+        });
+        // Clear the cart from localStorage
+        localStorage.removeItem("cart");
+      })
+      .catch(error => {
+        console.error('Error adding price:', error);
+        // Handle error if needed
+      });
+  }
+
+  async function submitCustomer(dude) {
+    await data.submitCustomer(dude);
+    setCustomer({});
   }
 
   const value = {
@@ -303,7 +342,8 @@ export const Provider = ({ children }) => {
       removeSpecialty,
       removeCustom,
       removeSide,
-      submitOrder
+      submitOrder,
+      submitCustomer
     },
   };
 

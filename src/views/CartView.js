@@ -39,8 +39,8 @@ export default function Cart() {
   }, []);
 
   function mapSpecialtiesMobile() {
-    return specialties.map((item, i) => {
-      return (
+    if (specialties && specialties.length > 0) {
+      return specialties.map((item, i) => (
         <div className="add_border_bottom" key={i}>
           <p>{`${item.title} - $${item.price}`}</p>
           <p>{`Quantity: ${item.quantity}`}</p>
@@ -48,38 +48,39 @@ export default function Cart() {
             remove
           </p>
         </div>
-      );
-    });
+      ));
+    }
+    return null; // Optionally return null or a message if there are no specialties
   }
 
   function mapCustomsMobile() {
-    return customs.map((item, i) => {
-      return (
+    if (customs && customs.length > 0) {
+      return customs.map((item, i) => (
         <div className="add_border_bottom" key={i}>
           <p>{`${item.id} - $${item.price}`}</p>
-          <p>{`Quantity: ${item.quantity || 0}`}</p>{" "}
-          {/* Fallback to 0 if undefined */}
+          <p>{`Quantity: ${item.quantity || 0}`}</p>
           <p className="fake_anchor" onClick={() => removeCustom(item.id)}>
             remove
           </p>
         </div>
-      );
-    });
+      ));
+    }
+    return null; // Optionally return null or a message if there are no custom pizzas
   }
 
   function mapSidesMobile() {
-    return sides.map((item, i) => {
-      return (
+    if (sides && sides.length > 0) {
+      return sides.map((item, i) => (
         <div className="add_border_bottom" key={i}>
           <p>{`${item.title} - $${item.price}`}</p>
-          <p>{`Quantity: ${item.quantity || 0}`}</p>{" "}
-          {/* Fallback to 0 if undefined */}
+          <p>{`Quantity: ${item.quantity || 0}`}</p>
           <p className="fake_anchor" onClick={() => removeSide(item.id)}>
             remove
           </p>
         </div>
-      );
-    });
+      ));
+    }
+    return null; // Optionally return null or a message if there are no sides
   }
 
   async function removeSpecialty(id) {
@@ -96,21 +97,26 @@ export default function Cart() {
   }
 
   function showSpecialtyHeader() {
-    if (cart.specialtyPizzas.length > 0) {
+    if (cart && cart.specialtyPizzas && cart.specialtyPizzas.length > 0) {
       return <h5 className="mt-3">Specialty Pizzas</h5>;
     }
   }
 
   function showCustomHeader() {
-    if (cart.customPizzas.length > 0) {
+    if (cart && cart.customPizzas && cart.customPizzas.length > 0) {
       return <h5 className="mt-3">Custom Pizzas</h5>;
     }
   }
-
+  
   function showSidesHeader() {
-    if (cart.sides.length > 0) {
+    if (cart && cart.sides && cart.sides.length > 0) {
       return <h5 className="mt-3">Side Orders</h5>;
     }
+  }
+
+  async function submitCart() {
+    await actions.submitOrder();
+    navigate('/customer_info');
   }
 
   if (mobileMode || tabletMode) {
@@ -118,7 +124,7 @@ export default function Cart() {
       <>
         <div className="w-100 px-5 text-center">
           <div className="row py-3 px-5">
-            <h2>{`Total: $${cart.total}`}</h2>
+            <h2>{`Total: $${cart.total || 0}`}</h2>
           </div>
           {showSpecialtyHeader()}
           {mapSpecialtiesMobile()}
@@ -127,7 +133,7 @@ export default function Cart() {
           {showSidesHeader()}
           {mapSidesMobile()}
           <div className="text-center mt-3">
-            <button className="px-5 py-2 mt-3 mb-5" onClick={() => navigate('/customer_info')}>Place Order</button>
+            <button className="px-5 py-2 mt-3 mb-5" onClick={() => submitCart()}>Place Order</button>
           </div>
         </div>
       </>
@@ -137,7 +143,7 @@ export default function Cart() {
     <>
       <div className="w-50 m-auto px-5 text-center">
         <div className="row py-3 px-5">
-          <h2>{`Total: $${cart.total}`}</h2>
+          <h2>{`Total: $${cart.total || 0}`}</h2>
         </div>
         {showSpecialtyHeader()}
         {mapSpecialtiesMobile()}
@@ -146,7 +152,7 @@ export default function Cart() {
         {showSidesHeader()}
         {mapSidesMobile()}
         <div className="text-center mt-3">
-          <button className="px-5 py-2 mt-3 mb-5" onClick={() => navigate('/customer_info')}>Place Order</button>
+          <button className="px-5 py-2 mt-3 mb-5" onClick={() => submitCart()}>Place Order</button>
         </div>
       </div>
     </>

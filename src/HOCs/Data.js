@@ -43,7 +43,30 @@ export default class Data {
     }
   }
 
-  async submitOrder(cart) {
-    console.log(cart);
+  async addSpecialties(cart) {
+    if (cart.specialtyPizzas) {
+      cart.specialtyPizzas.forEach(item => console.log(item));
+    }
   }
+
+  async addCustoms(cart) {
+    if (cart.customPizzas) {
+      cart.customPizzas.forEach(item => console.log(item));
+    }
+  }
+
+  async addSides(cart) {
+    if (cart.sides) {
+      cart.sides.forEach(item => console.log(item));
+    }
+  }
+
+  async setPrice(cart) {
+    console.log(cart.total);
+  }
+
+  async submitCustomer(customer) {
+    console.log(customer);
+  }
+
 }
