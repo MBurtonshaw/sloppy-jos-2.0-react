@@ -43,13 +43,12 @@ export const Provider = ({ children }) => {
       const formattedCreditCard = customer.customerCreditCard.replace(/\D/g, ''); // Remove non-digit characters
   
       setCustomer({
-        firstName: customer.customerFirstName,
-        lastName: customer.customerLastName,
-        email: customer.customerEmail,
-        phone: formattedPhone,
-        credit: formattedCreditCard,
-        creditExpiry: customer.customerCreditExpiry,
-        creditCVV: customer.customerCreditCVV,
+        first_name: customer.customerFirstName,
+        last_name: customer.customerLastName,
+        email_address: customer.customerEmail,
+        phone_number: formattedPhone,
+        credit_card: formattedCreditCard,
+        credit_cvv: customer.customerCreditCVV,
       });
     } catch (error) {
       console.error("Error filling customer data:", error);
@@ -287,6 +286,10 @@ export const Provider = ({ children }) => {
     });
   };
 
+  async function submitOrder() {
+    await data.submitOrder(cart);
+  }
+
   const value = {
     customer,
     cart,
@@ -300,6 +303,7 @@ export const Provider = ({ children }) => {
       removeSpecialty,
       removeCustom,
       removeSide,
+      submitOrder
     },
   };
 

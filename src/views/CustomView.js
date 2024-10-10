@@ -5,45 +5,52 @@ export default function Custom(props) {
   const { actions, data } = useContext(Context);
 
   const availableToppings = [
-    "Pepperoni",
-    "Bacon",
-    "Ham",
-    "Mushrooms",
-    "Black Olives",
-    "Green Olives",
-    "Bell Pepper",
-    "Italian Sausage",
-    "Onions",
-    "Pineapple",
-    "Extra Cheese",
-    "Prosciutto",
-    "Meatballs",
-    "Anchovies",
-    "Roasted Garlic",
-    "Truffles",
-    "Artichokes",
-    "Blue Cheese",
-    "Jalapenos",
-    "Ground Beef",
-    "Sloppy Joe Sauce",
+    {name: "Pepperoni", id: 1},
+    {name: "Bacon", id: 2},
+    {name: "Ham", id: 3},
+    {name: "Mushrooms", id: 4},
+    {name: "Black Olives", id: 5},
+    {name: "Green Olives", id: 6},
+    {name: "Bell Pepper", id: 7},
+    {name: "Italian Sausage", id: 8},
+    {name: "Onions", id: 9},
+    {name: "Pineapple", id: 10},
+    {name: "Extra Cheese", id: 11},
+    {name: "Prosciutto", id: 12},
+    {name: "Meatballs", id: 13},
+    {name: "Anchovies", id: 14},
+    {name: "Roasted Garlic", id: 15},
+    {name: "Truffles", id: 16},
+    {name: "Artichokes", id: 17},
+    {name: "Blue Cheese", id: 18},
+    {name: "Jalapenos", id: 19},
+    {name: "Ground Beef", id: 20},
+    {name: "Sloppy Joe Sauce", id: 21}
   ];
 
   const currentDate = new Date();
   const currentDay = currentDate.getDate();
   const currentMonth = currentDate.getMonth() + 1;
 
-  const addPizzaToCart = () => {
-    const pizza = { size, sauce, crust, toppings, price };
-    pizza.id = `Custom-${currentMonth}${currentDay}${price}`;
-    actions.addCustom(pizza); // Call addCustom from context to add the pizza to the cart
+const addPizzaToCart = () => {
+  const pizza = {
+    size_name,
+    sauce_name,
+    crust_name,
+    toppings: toppings, // Use names for the toppings
+    toppingIds: toppingIds, // Use IDs for the topping IDs
+    price,
   };
+  pizza.id = `Custom-${currentMonth}${currentDay}${price}`;
+  actions.addCustom(pizza); // Call addCustom from context to add the pizza to the cart
+};
 
   const handleSauceChange = (event) => {
-    setSauce(event.target.value);
+    setSauce_name(event.target.value);
   };
 
   const handleCrustChange = (event) => {
-    setCrust(event.target.value);
+    setCrust_name(event.target.value);
   };
 
   const basePrices = {
@@ -67,17 +74,18 @@ export default function Custom(props) {
     setPrice((prevPrice) => prevPrice - previousSizePrice + newSizePrice);
 
     // Update the size and previous size states
-    setSize(newSize);
+    setSize_name(newSize);
     setPreviousSize(newSize); // Update previous size to the new one
   };
 
   const [desktopMode, setDesktopMode] = useState(false);
   const [tabletMode, setTabletMode] = useState(false);
   const [mobileMode, setMobileMode] = useState(false);
-  const [size, setSize] = useState("Small");
-  const [sauce, setSauce] = useState("Regular");
-  const [crust, setCrust] = useState("Traditional");
+  const [size_name, setSize_name] = useState("Small");
+  const [sauce_name, setSauce_name] = useState("Regular");
+  const [crust_name, setCrust_name] = useState("Traditional");
   const [toppings, setToppings] = useState([]);
+  const [toppingIds, setToppingIds] = useState([]);
   const [price, setPrice] = useState(15);
 
   const updateMode = () => {
@@ -97,12 +105,18 @@ export default function Custom(props) {
   };
 
   const handleToppingChange = (topping) => {
-    if (toppings.includes(topping)) {
-      setToppings(toppings.filter((t) => t !== topping));
-      setPrice((prevPrice) => prevPrice - 1); // Subtract $1 for the topping
+    const { id, name } = topping; // Destructure ID and name from the topping
+  
+    if (toppingIds.includes(id)) {
+      // If the topping ID is already selected, remove it
+      setToppingIds(toppingIds.filter(t => t !== id)); // Remove ID
+      setToppings(toppings.filter(t => t !== name)); // Remove name
+      setPrice(prevPrice => prevPrice - 1); // Subtract $1 for the topping
     } else {
-      setToppings([...toppings, topping]);
-      setPrice((prevPrice) => prevPrice + 1); // Add $1 for the topping
+      // If the topping ID is not selected, add it
+      setToppingIds([...toppingIds, id]); // Add ID
+      setToppings([...toppings, name]); // Add name
+      setPrice(prevPrice => prevPrice + 1); // Add $1 for the topping
     }
   };
 
@@ -263,17 +277,16 @@ export default function Custom(props) {
               Choose Your Sloppy Toppings - Only $1 Per Topping!
             </h4>
             <div className="row">
-              {availableToppings.map((topping, i) => (
-                <div className="col-xs-6 col-sm-4" key={i}>
-                  <input
-                    type="checkbox"
-                    name={topping}
-                    checked={toppings.includes(topping)} // Control the checkbox state
-                    onChange={() => handleToppingChange(topping)} // Use the updated handler
-                  />
-                  <label className="px-1 topping_label">{topping}</label>
-                </div>
-              ))}
+            {availableToppings.map((topping) => (
+    <div className="col-xs-6 col-sm-4" key={topping.id}>
+      <input
+        type="checkbox"
+        checked={toppingIds.includes(topping.id)} // Check if the topping is selected
+        onChange={() => handleToppingChange(topping)} // Pass the whole topping object
+      />
+      <label className="px-1 topping_label">{topping.name}</label>
+    </div>
+  ))}
             </div>
           </div>
           <div className="text-center p-3">
@@ -406,18 +419,16 @@ export default function Custom(props) {
               Choose Your Sloppy Toppings - Only $1 Per Topping!
             </h4>
             <div className="row">
-              {availableToppings.map((topping, i) => (
-                <div className="col-xs-6 col-sm-4 text-center" key={i}>
-                  <input type="checkbox" name={topping} value="topping" />
-                  <label
-                    className="px-1 topping_label"
-                    htmlFor={topping}
-                    value="topping"
-                  >
-                    {topping}
-                  </label>
-                </div>
-              ))}
+            {availableToppings.map((topping) => (
+    <div className="col-xs-6 col-sm-4" key={topping.id}>
+      <input
+        type="checkbox"
+        checked={toppingIds.includes(topping.id)} // Check if the topping is selected
+        onChange={() => handleToppingChange(topping)} // Pass the whole topping object
+      />
+      <label className="px-1 topping_label">{topping.name}</label>
+    </div>
+  ))}
             </div>
           </div>
           <div className="text-center p-3">

@@ -72,7 +72,7 @@ export default function Menu() {
     return (
       <>
         <div className="pb-5 mx-2">
-          <h4 className="text-center p-4 pt-5">Build Your Own</h4>
+          <h4 className="text-center p-4 pt-5 fs-1">Build Your Own</h4>
           <div className="">
             <div className="card text-center">
               <a className="nonchalant" href="/custom">

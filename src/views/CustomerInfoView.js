@@ -121,6 +121,7 @@ export default function CustomerInfo() {
       window.alert("Please enter delivery or takeout");
     } else {
       await actions.fillCustomer(customer);
+      await actions.submitOrder();
       navigate("/receipt");
     }
   }

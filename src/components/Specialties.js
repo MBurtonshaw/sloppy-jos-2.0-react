@@ -57,6 +57,29 @@ export default function Specialties() {
     </div>
   );
 
+  const renderCardMobile = (imgSrc, title, price, description, id) => (
+    <div className="pb-4 mx-2">
+      <h4 className="text-center pb-3 pt-4">{title}</h4>
+      <div className="">
+        <div className="card text-center">
+          <img src={imgSrc} alt="Custom Pizza" className="card-img-top" />
+          <p className="mx-2">
+            {title}
+            <br />${price}
+            <br />
+            {description}
+          </p>
+          <button
+            className="btn btn-primary w-50 m-auto mb-2"
+            onClick={() => addSpecialty(id, title, price)}
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
   if (desktopMode) {
     return (
       <>
@@ -103,33 +126,33 @@ export default function Specialties() {
     return (
       <>
         <div className="pb-5 text-center mx-3">
-          <h4 className="p-3">
+          <h4 className="pt-3 fs-1">
             World Famous Sloppy Specialty Pizzas! <br />
             (Medium Only)
           </h4>
           <div className="row justify-content-center">
-            {renderCard(
+            {renderCardMobile(
               "img/orderSloppyPizza-min.png",
               "Sloppy Joe Special",
               25,
               "Loaded with seasoned ground beef, tangy tomato sauce, and a melty cheese blend that brings the classic Sloppy Joe to your plate",
               1
             )}
-            {renderCard(
+            {renderCardMobile(
               "img/orderSupreme-min.png",
               "The Sloppy Supreme",
               23,
               "Pepperoni, sausage, bell peppers, onions, and black olives, all layered over a rich tomato base and gooey mozzarella",
               2
             )}
-            {renderCard(
+            {renderCardMobile(
               "img/orderMeatlovers-min.png",
               "Sloppy's Carnivore Delight",
               22,
               "Piled high with pepperoni, sausage, ham, and bacon, all perfectly balanced by a hearty tomato sauce and melted cheese",
               3
             )}
-            {renderCard(
+            {renderCardMobile(
               "img/orderZestyTrio-min.png",
               "Jo's Zesty Trio",
               23.5,

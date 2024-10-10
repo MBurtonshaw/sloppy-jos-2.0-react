@@ -100,16 +100,46 @@ export default function Sides() {
     </div>
   );
 
+  const renderCardMobile = (side) => (
+    <div className="pb-4 mx-2">
+      <h4 className="text-center pb-3 pt-4">{side.title}</h4>
+      <div className="">
+        <div className="card text-center">
+          <img src={side.imgSrc} alt="Custom Pizza" className="card-img-top" />
+          <p className="mx-2">
+            {side.title}
+            <br />${side.price}
+            <br />
+            {side.description}
+          </p>
+          <button
+            className="btn btn-primary w-50 m-auto mb-2"
+            onClick={() => addSide(side.id, side.title, side.price)}
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  function sideRenderer() {
+    if(deviceMode === 'mobile' || deviceMode === 'tablet') {
+      return sidesData.map(renderCardMobile);
+    }
+    return sidesData.map(renderCard);
+  }
+
   return (
     <>
-      <h4 className="text-center my-3">Order Our Sloppy Sides!</h4>
+      <h4 className="text-center my-3 fs-1">Order Our Sloppy Sides!</h4>
       <div className="container pb-5">
         <div
           className={`row justify-content-center ${
             deviceMode === "desktop" ? "" : "text-center"
           }`}
         >
-          {sidesData.map(renderCard)}
+          {sideRenderer()}
         </div>
       </div>
     </>
