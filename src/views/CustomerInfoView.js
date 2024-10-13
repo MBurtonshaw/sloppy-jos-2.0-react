@@ -129,9 +129,9 @@ export default function CustomerInfo() {
         customerCreditExpiry,
         customerCreditCVV,
       };
-    
-      console.log("Submitting Customer:", customer); // Log right before submission
+      //populate customer object in context state
       await actions.fillCustomer(customer);
+      //passes customer object and cart to backend
       await actions.submitCustomer(customer);
       navigate("/receipt");
     }

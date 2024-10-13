@@ -82,8 +82,8 @@ const addPizzaToCart = () => {
   const [tabletMode, setTabletMode] = useState(false);
   const [mobileMode, setMobileMode] = useState(false);
   const [size_name, setSize_name] = useState("Small");
-  const [sauce_name, setSauce_name] = useState("Regular");
-  const [crust_name, setCrust_name] = useState("Traditional");
+  const [sauce_name, setSauce_name] = useState("Traditional");
+  const [crust_name, setCrust_name] = useState("Regular");
   const [toppings, setToppings] = useState([]);
   const [toppingIds, setToppingIds] = useState([]);
   const [price, setPrice] = useState(15);

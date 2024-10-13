@@ -302,30 +302,37 @@ export const Provider = ({ children }) => {
   };
 
   async function submitOrder() {
-    await data.addSpecialties(cart);
-    await data.addCustoms(cart);
-    await data.addSides(cart);
-    await data.setPrice(cart)
-      .then(response => {
-        console.log('Price added successfully:', response);
-        // Reset the cart state
-        setCart({
-          specialtyPizzas: [],
-          customPizzas: [],
-          sides: [],
-          total: 0,
-        });
-        // Clear the cart from localStorage
-        localStorage.removeItem("cart");
-      })
-      .catch(error => {
-        console.error('Error adding price:', error);
-        // Handle error if needed
-      });
+    const new_id = await data.createCart();
+    
+    // Update cart with the new ID
+    setCart(prevCart => {
+      const updatedCart = {
+        ...prevCart,
+        id: new_id // Add the new ID property
+      };
+      
+      // Log the updated cart ID here
+      console.log(`ID returned from Context.js: ${updatedCart.id}`);
+  
+      // You can now call other data methods that depend on the updated cart
+      data.addSpecialties(updatedCart);
+      data.addCustoms(updatedCart);
+      data.addSides(updatedCart);
+      data.setPrice(updatedCart);
+  
+      return updatedCart; // Return the updated cart
+    });
   }
 
   async function submitCustomer(dude) {
-    await data.submitCustomer(dude);
+    await data.submitCustomer(dude, cart);
+    setCart({
+      specialtyPizzas: [],
+      customPizzas: [],
+      sides: [],
+      total: 0,
+    });
+    localStorage.removeItem("cart");
     setCustomer({});
   }
 
