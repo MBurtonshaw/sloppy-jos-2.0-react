@@ -62,7 +62,6 @@ export default class Data {
   async addCustoms(cart) {
     if (cart.customPizzas) {
         const promises = cart.customPizzas.map(async item => {
-          console.log(item.toppingIds)
             // Create the pizza data without an ID
             const pizzaData = {
                 sauce_name: item.sauce_name,
@@ -72,7 +71,6 @@ export default class Data {
             };
             
             try {
-              console.log('Topping IDs:', pizzaData.toppingIds);
                 const response = await this.api(`api/carts/${cart.id}/addCustom`, 'POST', pizzaData);
                 return response;  // Capture the response which will contain the real ID
             } catch (error) {
@@ -98,15 +96,35 @@ export default class Data {
 
   async setPrice(cart) {
     if (cart.total) {
-      console.log({cart});
         this.api(`api/carts/${cart.id}/addTotal/${cart.total}`, 'POST')
     }
   }
 
-  async submitCustomer(customer, cart) {
-    console.log({customer});
-    console.log({cart});
+  async submitCustomer(customer) {
+    if (!customer) {
+      console.error("No customer data provided");
+      throw new Error("Customer data is required");
+    }
+  
+    try {
+      const response = await this.api(`api/customers/add`, 'POST', customer);
+      
+      // Check if the response has the expected structure
+      if (!response || typeof response.customer_id !== 'number') {
+        throw new Error("Customer creation failed: no valid response");
+      }
+      return response; // Return the entire response object
+    } catch (error) {
+      console.error("Failed to submit customer data:", error);
+      throw error; // Re-throw the error for further handling
+    }
   }
 
+  async linkCustomer(customer, cart) {
+    if (!cart.id) {
+        throw new Error("Cart ID is undefined");
+    }
+    await this.api(`api/customers/${cart.id}/connect`, 'POST', customer.customer_id);
+}
 
 }

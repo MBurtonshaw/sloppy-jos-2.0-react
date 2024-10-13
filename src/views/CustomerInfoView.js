@@ -4,25 +4,24 @@ import { useNavigate } from "react-router-dom";
 
 export default function CustomerInfo() {
   const { actions, cart } = useContext(Context);
-  const [customerFirstName, setCustomerFirstName] = useState(null);
-  const [customerLastName, setCustomerLastName] = useState(null);
-  const [customerEmail, setCustomerEmail] = useState(null);
-  const [customerPhone, setCustomerPhone] = useState(null);
-  const [customerCreditCard, setCustomerCreditCard] = useState(null);
-  const [customerCreditExpiry, setCustomerCreditExpiry] = useState(null);
-  const [customerCreditCVV, setCustomerCreditCVV] = useState(null);
+  const [first_name, setFirst_name] = useState(null);
+  const [last_name, setLast_name] = useState(null);
+  const [email_address, setEmail_address] = useState(null);
+  const [phone_number, setPhone_number] = useState(null);
+  const [credit_card, setCredit_card] = useState(null);
+  const [credit_expiry, setCredit_expiry] = useState(null);
+  const [credit_cvv, setCredit_cvv] = useState(null);
   const [delivery, setDelivery] = useState("");
   const [desktopMode, setDesktopMode] = useState(false);
   const [tabletMode, setTabletMode] = useState(false);
   const [mobileMode, setMobileMode] = useState(false);
   const customer = {
-    customerFirstName,
-    customerLastName,
-    customerEmail,
-    customerPhone,
-    customerCreditCard,
-    customerCreditExpiry,
-    customerCreditCVV,
+    first_name,
+    last_name,
+    email_address,
+    phone_number,
+    credit_card,
+    credit_cvv,
   };
 
   const phoneRegEx = new RegExp(
@@ -60,80 +59,85 @@ export default function CustomerInfo() {
 
   function handleFirstNameChange() {
     let name = document.getElementById("customerFirstName");
-    setCustomerFirstName(name.value);
+    setFirst_name(name.value);
   }
 
   function handleLastNameChange() {
     let name = document.getElementById("customerLastName");
-    setCustomerLastName(name.value);
+    setLast_name(name.value);
   }
 
   function handleEmailChange() {
     let email = document.getElementById("customerEmail");
-    setCustomerEmail(email.value);
+    setEmail_address(email.value);
   }
 
   function handlePhoneChange() {
     let phone = document.getElementById("customerPhone");
-    setCustomerPhone(phone.value);
+    setPhone_number(phone.value);
   }
 
   function handleCreditCardChange() {
     let credit = document.getElementById("creditCardNumber");
-    setCustomerCreditCard(credit.value);
+    setCredit_card(credit.value);
   }
 
   function handleCreditExpiryChange() {
     let expiry = document.getElementById("creditCardExpiry");
-    setCustomerCreditExpiry(expiry.value);
+    setCredit_expiry(expiry.value);
   }
 
   function handleCreditCVVChange() {
     let CVV = document.getElementById("creditCardCVV");
-    setCustomerCreditCVV(CVV.value);
+    setCredit_cvv(CVV.value);
   }
 
   async function handleSubmit() {
-    if (!customer.customerFirstName) {
+    if (!customer.first_name) {
       window.alert("Please enter a first name");
-    } else if (!customer.customerLastName) {
+    } else if (!customer.last_name) {
       window.alert("Please enter a last name");
-    } else if (!customer.customerEmail) {
+    } else if (!customer.email_address) {
       window.alert("Please enter a valid email address");
     } else if (
-      !customer.customerPhone ||
-      !phoneRegEx.test(customer.customerPhone)
+      !customer.phone_number ||
+      !phoneRegEx.test(customer.phone_number)
     ) {
       window.alert("Please enter a valid US phone number - 10 digits");
     } else if (
-      !customer.customerCreditCard ||
-      !creditCardRegEx.test(customerCreditCard)
+      !customer.credit_card ||
+      !creditCardRegEx.test(credit_card)
     ) {
       window.alert("Please enter a valid 16-digit credit card number");
-    } else if (!customer.customerCreditExpiry) {
+    } else if (!credit_expiry) {
       window.alert("Please enter credit card expiration date");
     } else if (
-      !customer.customerCreditCVV ||
-      !cvvRegEx.test(customerCreditCVV)
+      !customer.credit_cvv ||
+      !cvvRegEx.test(credit_cvv)
     ) {
       window.alert("Please enter a valid 3-digit credit card CVV");
     } else if (delivery === "") {
       window.alert("Please enter delivery or takeout");
     } else {
       const customer = {
-        customerFirstName,
-        customerLastName,
-        customerEmail,
-        customerPhone,
-        customerCreditCard,
-        customerCreditExpiry,
-        customerCreditCVV,
+        first_name,
+        last_name,
+        email_address,
+        phone_number,
+        credit_card,
+        credit_cvv,
       };
       //populate customer object in context state
       await actions.fillCustomer(customer);
       //passes customer object and cart to backend
-      await actions.submitCustomer(customer);
-      navigate("/receipt");
+      try {
+        const response = await actions.submitCustomer(customer);
+        // Navigate or show success message based on the response
+        navigate("/receipt");
+      } catch (error) {
+        console.error("Error submitting customer data:", error);
+        // Show an error message to the user if needed
+      }
     }
   }
 

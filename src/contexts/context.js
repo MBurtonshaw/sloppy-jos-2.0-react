@@ -52,22 +52,34 @@ export const Provider = ({ children }) => {
   // };
 
   const fillCustomer = async (customer) => {
+    if (!customer || typeof customer !== 'object') {
+      console.error("Invalid customer data");
+      return;
+    }
+  
     try {
-      // Format phone number and credit card to remove non-digit characters
-      const formattedPhone = customer.customerPhone.replace(/\D/g, ''); // Remove non-digit characters
-      const formattedCreditCard = customer.customerCreditCard.replace(/\D/g, ''); // Remove non-digit characters
+      const {
+        first_name,
+        last_name,
+        email_address,
+        phone_number,
+        credit_card,
+        credit_cvv
+      } = customer;
+  
+      const formattedPhone = phone_number.replace(/\D/g, '');
+      const formattedCreditCard = credit_card.replace(/\D/g, '');
   
       setCustomer({
-        first_name: customer.customerFirstName,
-        last_name: customer.customerLastName,
-        email_address: customer.customerEmail,
+        first_name: first_name,  // Use the desired key here
+        last_name: last_name,
+        email_address: email_address,
         phone_number: formattedPhone,
         credit_card: formattedCreditCard,
-        credit_cvv: customer.customerCreditCVV,
+        credit_cvv: credit_cvv,
       });
     } catch (error) {
       console.error("Error filling customer data:", error);
-      // Optionally, handle errors (e.g., show a message to the user)
     }
   };
 
@@ -310,9 +322,6 @@ export const Provider = ({ children }) => {
         ...prevCart,
         id: new_id // Add the new ID property
       };
-      
-      // Log the updated cart ID here
-      console.log(`ID returned from Context.js: ${updatedCart.id}`);
   
       // You can now call other data methods that depend on the updated cart
       data.addSpecialties(updatedCart);
@@ -324,8 +333,9 @@ export const Provider = ({ children }) => {
     });
   }
 
-  async function submitCustomer(dude) {
-    await data.submitCustomer(dude, cart);
+  async function submitCustomer(customer) {
+    const newCustomer = await data.submitCustomer(customer);
+    await data.linkCustomer(newCustomer, cart);
     setCart({
       specialtyPizzas: [],
       customPizzas: [],
@@ -335,6 +345,7 @@ export const Provider = ({ children }) => {
     localStorage.removeItem("cart");
     setCustomer({});
   }
+  
 
   const value = {
     customer,
