@@ -33,8 +33,9 @@ export default function Specialties() {
     };
   }, []);
 
-  const addSpecialty = (id, title, price) => {
-    actions.addSpecialty(id, title, price);
+  const addSpecialty = (id, title, price, quantity) => {
+    console.log('Adding specialty with quantity:', quantity);
+    actions.addSpecialty(id, title, price, quantity);
   };
 
   const renderCard = (imgSrc, title, price, description, id) => (
@@ -49,7 +50,7 @@ export default function Specialties() {
         </p>
         <button
           className="btn btn-primary add-to-cart-btn"
-          onClick={() => addSpecialty(id, title, price)}
+          onClick={() => addSpecialty(id, title, price, 1)}
         >
           Add to Cart
         </button>
@@ -71,7 +72,7 @@ export default function Specialties() {
           </p>
           <button
             className="btn btn-primary w-50 m-auto mb-2"
-            onClick={() => addSpecialty(id, title, price)}
+            onClick={() => addSpecialty(id, title, price, 1)}
           >
             Add to Cart
           </button>

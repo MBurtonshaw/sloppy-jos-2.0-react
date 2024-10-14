@@ -76,8 +76,9 @@ export default function Sides() {
     };
   }, []);
 
-  const addSide = (id, title, price) => {
-    actions.addSide(id, title, price);
+  const addSide = (id, title, price, quantity) => {
+    console.log('side quantity: ' + quantity)
+    actions.addSide(id, title, price, quantity);
   };
 
   const renderCard = (side) => (
@@ -92,7 +93,7 @@ export default function Sides() {
         </p>
         <button
           className="btn btn-primary add-to-cart-btn"
-          onClick={() => addSide(side.id, side.title, side.price)}
+          onClick={() => addSide(side.id, side.title, side.price, 1)}
         >
           Add to Cart
         </button>
@@ -114,7 +115,7 @@ export default function Sides() {
           </p>
           <button
             className="btn btn-primary w-50 m-auto mb-2"
-            onClick={() => addSide(side.id, side.title, side.price)}
+            onClick={() => addSide(side.id, side.title, side.price, 1)}
           >
             Add to Cart
           </button>

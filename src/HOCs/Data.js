@@ -51,26 +51,31 @@ export default class Data {
 
   async addSpecialties(cart) {
     if (cart.specialtyPizzas) {
-      //make API call here, separate call for each item, 
-      //cart_id goes in the url, item.id is the body being sent (not as an object, plain integer)
-      await cart.specialtyPizzas.forEach((item) => {
-        this.api(`api/carts/${cart.id}/addSpecialty`, 'POST', item.id)
-      });
+      // Make API call here, separate call for each item
+      const requests = cart.specialtyPizzas.map((item) => 
+        this.api(`api/carts/${cart.id}/addSpecialty/${item.id}/${item.quantity}`, 'POST')
+      );
+  
+      try {
+        await Promise.all(requests);
+        console.log('All specialty pizzas added successfully');
+      } catch (error) {
+        console.error('Error adding specialty pizzas:', error);
+      }
     }
   }
 
   async addCustoms(cart) {
     if (cart.customPizzas) {
         const promises = cart.customPizzas.map(async item => {
-            // Create the pizza data without an ID
-            const pizzaData = {
-                sauce_name: item.sauce_name,
-                crust_name: item.crust_name,
-                size_name: item.size_name,
-                toppingIds: item.toppingsIds
-            };
-            
+          const pizzaData = {
+            sauce_name: item.sauce_name,
+            crust_name: item.crust_name,
+            size_name: item.size_name,
+            toppingIds: item.toppingIds
+          }
             try {
+              console.log(pizzaData);
                 const response = await this.api(`api/carts/${cart.id}/addCustom`, 'POST', pizzaData);
                 return response;  // Capture the response which will contain the real ID
             } catch (error) {
@@ -84,15 +89,21 @@ export default class Data {
 }
 
 
-  async addSides(cart) {
-    if (cart.sides) {
-      //make API call here, separate call for each item, 
-      //cart_id goes in the url, item.id is the body being sent (not as an object, plain integer)
-      cart.sides.forEach((item) => {
-        this.api(`api/carts/${cart.id}/addSide`, 'POST', item.id)
-    });
+async addSides(cart) {
+  if (cart.sides) {
+    // Make API call here, separate call for each item
+    const requests = cart.sides.map((item) => 
+      this.api(`api/carts/${cart.id}/addSide/${item.side_id}/${item.quantity}`, 'POST')
+    );
+
+    try {
+      await Promise.all(requests);
+      console.log('All sides added successfully');
+    } catch (error) {
+      console.error('Error adding sides:', error);
     }
   }
+}
 
   async setPrice(cart) {
     if (cart.total) {
@@ -125,6 +136,11 @@ export default class Data {
         throw new Error("Cart ID is undefined");
     }
     await this.api(`api/customers/${cart.id}/connect`, 'POST', customer.customer_id);
+}
+
+async getCart(id) {
+  const newCart = await this.api(`api/carts/${id}`, 'GET');
+  return newCart;
 }
 
 }

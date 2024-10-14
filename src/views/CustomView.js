@@ -32,16 +32,26 @@ export default function Custom(props) {
   const currentDay = currentDate.getDate();
   const currentMonth = currentDate.getMonth() + 1;
 
+  const [desktopMode, setDesktopMode] = useState(false);
+  const [tabletMode, setTabletMode] = useState(false);
+  const [mobileMode, setMobileMode] = useState(false);
+  const [size_name, setSize_name] = useState("Small");
+  const [sauce_name, setSauce_name] = useState("Traditional");
+  const [crust_name, setCrust_name] = useState("Regular");
+  const [toppings, setToppings] = useState([]);
+  const [toppingIds, setToppingIds] = useState([]);
+  const [price, setPrice] = useState(15);
+
 const addPizzaToCart = () => {
   const pizza = {
     size_name,
     sauce_name,
     crust_name,
-    toppings: toppings, // Use names for the toppings
-    toppingIds: toppingIds, // Use IDs for the topping IDs
+    toppingIds, // Use names for the toppings
     price,
   };
   pizza.id = `Custom-${currentMonth}${currentDay}${price}`;
+  console.log('Adding pizza to cart:', pizza);
   actions.addCustom(pizza); // Call addCustom from context to add the pizza to the cart
 };
 
@@ -78,15 +88,7 @@ const addPizzaToCart = () => {
     setPreviousSize(newSize); // Update previous size to the new one
   };
 
-  const [desktopMode, setDesktopMode] = useState(false);
-  const [tabletMode, setTabletMode] = useState(false);
-  const [mobileMode, setMobileMode] = useState(false);
-  const [size_name, setSize_name] = useState("Small");
-  const [sauce_name, setSauce_name] = useState("Traditional");
-  const [crust_name, setCrust_name] = useState("Regular");
-  const [toppings, setToppings] = useState([]);
-  const [toppingIds, setToppingIds] = useState([]);
-  const [price, setPrice] = useState(15);
+
 
   const updateMode = () => {
     if (window.innerWidth <= 779) {
@@ -106,7 +108,7 @@ const addPizzaToCart = () => {
 
   const handleToppingChange = (topping) => {
     const { id, name } = topping; // Destructure ID and name from the topping
-  
+    console.log(topping.id)
     if (toppingIds.includes(id)) {
       // If the topping ID is already selected, remove it
       setToppingIds(toppingIds.filter(t => t !== id)); // Remove ID
@@ -322,7 +324,8 @@ const addPizzaToCart = () => {
                 />
                 <div className="card-body text-center">
                   <h5 className="card-title">Small</h5>
-                  <input type="radio" name="size" value="Small" />
+                  <input type="radio" name="size" value="Small" onChange={handleSizeChange}/>
+
                 </div>
                 <div className="description">
                   $15
@@ -338,7 +341,8 @@ const addPizzaToCart = () => {
                 />
                 <div className="card-body text-center">
                   <h5 className="card-title">Medium</h5>
-                  <input type="radio" name="size" value="Medium" />
+                  <input type="radio" name="size" value="Medium" onChange={handleSizeChange}/>
+                  
                 </div>
                 <div className="description">
                   $18.00
@@ -354,7 +358,7 @@ const addPizzaToCart = () => {
                 />
                 <div className="card-body text-center">
                   <h5 className="card-title">Large</h5>
-                  <input type="radio" name="size" value="Large" />
+                  <input type="radio" name="size" value="Large" onChange={handleSizeChange}/>
                 </div>
                 <div className="description">
                   $22.00
@@ -370,7 +374,7 @@ const addPizzaToCart = () => {
                 />
                 <div className="card-body text-center">
                   <h5 className="card-title">Half-Sheet</h5>
-                  <input type="radio" name="size" value="Half-Sheet" />
+                  <input type="radio" name="size" value="Half-Sheet" onChange={handleSizeChange}/>
                 </div>
                 <div className="description">
                   $30.00
@@ -386,7 +390,7 @@ const addPizzaToCart = () => {
                 />
                 <div className="card-body text-center">
                   <h5 className="card-title">Full-Sheet</h5>
-                  <input type="radio" name="size" value="Full-Sheet" />
+                  <input type="radio" name="size" value="Full-Sheet" onChange={handleSizeChange}/>
                 </div>
                 <div className="description">
                   $37.50
@@ -398,7 +402,7 @@ const addPizzaToCart = () => {
 
           <div className="form-group">
             <h4 className="py-2 text-center">Choose Your Sloppy Crust</h4>
-            <select className="form-control">
+            <select className="form-control" onChange={handleCrustChange}>
               <option>Regular</option>
               <option>Thin </option>
               <option>Pan</option>
@@ -407,7 +411,7 @@ const addPizzaToCart = () => {
 
           <div className="form-group">
             <h4 className="mt-4 py-2 text-center">Choose Your Sloppy Sauce</h4>
-            <select className="form-control">
+            <select className="form-control" onChange={handleSauceChange}>
               <option>Traditional</option>
               <option>Basil-Pesto</option>
               <option>Garlic Parmesean</option>
@@ -435,7 +439,7 @@ const addPizzaToCart = () => {
             <button
               type="button"
               className="btn btn-primary p-2 px-5"
-              on-click={addPizzaToCart}
+              onClick={addPizzaToCart}
             >
               Add to Cart
             </button>

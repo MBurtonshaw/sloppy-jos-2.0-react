@@ -211,6 +211,10 @@ HOME
   letter-spacing: 1.7px;
 }
 
+.btn::selection {
+  background-color: red;
+}
+
 .pizza-video-div {
   width: 80%;
   margin: auto;
@@ -248,6 +252,10 @@ HOME
   text-align: center;
   padding-top: 1.5em;
   padding-bottom: 0.5em;
+}
+
+.less-top {
+  margin-top: -0.5em;
 }
 
 .tagline_small {
@@ -396,4 +404,7 @@ HOME
       margin-top: 5em;
     }
   }
+
+
+  
 }

@@ -40,16 +40,15 @@ export const Provider = ({ children }) => {
   }, [cart]);
 
   // Fetch customer data
-  // const getCustomer = async () => {
-  //   try {
-  //     const customer = await data.getCustomer();
-  //     setCustomer(customer);
-  //     return customer;
-  //   } catch (error) {
-  //     setError(error);
-  //     console.error("Failed to fetch customer:", error);
-  //   }
-  // };
+  const getCart = async (id) => {
+    try {
+      const newCart = await data.getCart(id);
+      setCart(newCart);
+    } catch (error) {
+      setError(error);
+      console.error("Failed to fetch customer:", error);
+    }
+  };
 
   const fillCustomer = async (customer) => {
     if (!customer || typeof customer !== 'object') {
@@ -101,6 +100,7 @@ export const Provider = ({ children }) => {
   };
 
   const addCustom = (pizza) => {
+    console.log(pizza);
     setCart((prevCart) => {
       const existingPizza = prevCart.customPizzas.find(
         (p) => p.id === pizza.id
@@ -134,20 +134,21 @@ export const Provider = ({ children }) => {
     });
   };
 
-  const addSpecialty = (id, title, price) => {
+  const addSpecialty = (id, title, price, quantity) => {
+    console.log('Adding specialty with quantity:', quantity);
     setCart((prevCart) => {
       const existingSpecialty = prevCart.specialtyPizzas.find(
         (pizza) => pizza.id === id
       );
-
+  
       if (existingSpecialty) {
         // Increment the quantity of the existing specialty pizza
         const updatedSpecialties = prevCart.specialtyPizzas.map((pizza) =>
           pizza.id === id
-            ? { ...pizza, quantity: (pizza.quantity || 1) + 1 }
+            ? { ...pizza, quantity: (pizza.quantity || 0) + quantity }
             : pizza
         );
-
+  
         return {
           ...prevCart,
           specialtyPizzas: updatedSpecialties,
@@ -157,49 +158,61 @@ export const Provider = ({ children }) => {
           }), // Recalculate total
         };
       }
-
-      // If it's a new specialty pizza, add it with a quantity of 1
+  
+      // If it's a new specialty pizza, add it with the provided quantity
       return {
         ...prevCart,
         specialtyPizzas: [
           ...prevCart.specialtyPizzas,
-          { id, title, price, quantity: 1 },
+          { id, title, price, quantity: quantity || 1 }, // Default to 1 if quantity is not provided
         ],
         total: calculateTotal({
           ...prevCart,
           specialtyPizzas: [
             ...prevCart.specialtyPizzas,
-            { id, title, price, quantity: 1 },
+            { id, title, price, quantity: quantity || 1 },
           ],
         }),
       };
     });
   };
 
-  const addSide = (id, title, price) => {
+  const addSide = (id, title, price, quantity) => {
+    console.log('Adding side with quantity:', quantity);
     setCart((prevCart) => {
-      const existingSide = prevCart.sides.find((s) => s.id === id);
-
+      const existingSide = prevCart.sides.find((side) => side.side_id === id);
+  
       if (existingSide) {
         // Increment the quantity of the existing side
-        const updatedSides = prevCart.sides.map((s) =>
-          s.id === id ? { ...s, quantity: (s.quantity || 1) + 1 } : s
+        const updatedSides = prevCart.sides.map((side) =>
+          side.side_id === id
+            ? { ...side, quantity: (side.quantity || 0) + quantity }
+            : side
         );
-
+  
         return {
           ...prevCart,
           sides: updatedSides,
-          total: calculateTotal({ ...prevCart, sides: updatedSides }), // Recalculate total
+          total: calculateTotal({
+            ...prevCart,
+            sides: updatedSides,
+          }), // Recalculate total
         };
       }
-
-      // If it's a new side, add it with a quantity of 1
+  
+      // If it's a new side, add it with the provided quantity
       return {
         ...prevCart,
-        sides: [...prevCart.sides, { id, title, price, quantity: 1 }],
+        sides: [
+          ...prevCart.sides,
+          { side_id: id, title, price, quantity: quantity || 1 }, // Use side_id for consistency
+        ],
         total: calculateTotal({
           ...prevCart,
-          sides: [...prevCart.sides, { id, title, price, quantity: 1 }],
+          sides: [
+            ...prevCart.sides,
+            { side_id: id, title, price, quantity: quantity || 1 },
+          ],
         }),
       };
     });
@@ -336,6 +349,11 @@ export const Provider = ({ children }) => {
   async function submitCustomer(customer) {
     const newCustomer = await data.submitCustomer(customer);
     await data.linkCustomer(newCustomer, cart);
+    const newId = cart.id;
+    await getCart(newId);
+  }
+
+  async function restartCart() {
     setCart({
       specialtyPizzas: [],
       customPizzas: [],
@@ -361,7 +379,8 @@ export const Provider = ({ children }) => {
       removeCustom,
       removeSide,
       submitOrder,
-      submitCustomer
+      submitCustomer,
+      restartCart
     },
   };
 
