@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { Context } from "../contexts/context.js";
 
 export default function Cart() {
@@ -98,25 +98,25 @@ export default function Cart() {
 
   function showSpecialtyHeader() {
     if (cart && cart.specialtyPizzas && cart.specialtyPizzas.length > 0) {
-      return <h5 className="mt-3">Specialty Pizzas</h5>;
+      return <h5 className="mt-3 fs-3">Specialty Pizzas</h5>;
     }
   }
 
   function showCustomHeader() {
     if (cart && cart.customPizzas && cart.customPizzas.length > 0) {
-      return <h5 className="mt-3">Custom Pizzas</h5>;
+      return <h5 className="mt-3 fs-3">Custom Pizzas</h5>;
     }
   }
-  
+
   function showSidesHeader() {
     if (cart && cart.sides && cart.sides.length > 0) {
-      return <h5 className="mt-3">Side Orders</h5>;
+      return <h5 className="mt-3 fs-3">Side Orders</h5>;
     }
   }
 
   async function submitCart() {
     await actions.submitOrder();
-    navigate('/customer_info');
+    navigate("/customer_info");
   }
 
   if (mobileMode || tabletMode) {
@@ -128,12 +128,18 @@ export default function Cart() {
           </div>
           {showSpecialtyHeader()}
           {mapSpecialtiesMobile()}
+
           {showCustomHeader()}
           {mapCustomsMobile()}
           {showSidesHeader()}
           {mapSidesMobile()}
           <div className="text-center mt-3">
-            <button className="px-5 py-2 mt-3 mb-5" onClick={() => submitCart()}>Place Order</button>
+            <button
+              className="px-5 py-2 mt-3 mb-5"
+              onClick={() => submitCart()}
+            >
+              Place Order
+            </button>
           </div>
         </div>
       </>
@@ -152,7 +158,9 @@ export default function Cart() {
         {showSidesHeader()}
         {mapSidesMobile()}
         <div className="text-center mt-3">
-          <button className="px-5 py-2 mt-3 mb-5" onClick={() => submitCart()}>Place Order</button>
+          <button className="px-5 py-2 mt-3 mb-5" onClick={() => submitCart()}>
+            Place Order
+          </button>
         </div>
       </div>
     </>

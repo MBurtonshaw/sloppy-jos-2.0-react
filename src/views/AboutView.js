@@ -3,7 +3,7 @@ export default function About() {
     <>
       <div class="container">
         <div class="row p-2">
-          <div class="col-md-4 text-center">
+          <div class="col-lg-4 text-center">
             <img
               src="img/founderPic.png"
               alt="Joe in a cape"
@@ -11,7 +11,7 @@ export default function About() {
             />
           </div>
 
-          <div class="col-md-8 founder-text">
+          <div class="col-lg-8 founder-text">
             <div className="p-2">
               <h2>Our Founder</h2>
               <p>

@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { Context } from "../contexts/context.js";
+import { toast } from "react-toastify";
 
 export default function Specialties() {
   const [desktopMode, setDesktopMode] = useState(false);
@@ -33,8 +34,16 @@ export default function Specialties() {
     };
   }, []);
 
+  function notify() {
+    toast.success(`Specialty pizza added to cart`, {
+      position: "top-center",
+      autoClose: 1500,
+      theme: "light",
+    });
+  }
+
   const addSpecialty = (id, title, price, quantity) => {
-    console.log('Adding specialty with quantity:', quantity);
+    notify();
     actions.addSpecialty(id, title, price, quantity);
   };
 
@@ -60,23 +69,17 @@ export default function Specialties() {
 
   const renderCardMobile = (imgSrc, title, price, description, id) => (
     <div className="pb-4 mx-2">
-      <h4 className="text-center pb-3 pt-4">{title}</h4>
-      <div className="">
-        <div className="card text-center">
-          <img src={imgSrc} alt="Custom Pizza" className="card-img-top" />
-          <p className="mx-2">
-            {title}
-            <br />${price}
-            <br />
-            {description}
-          </p>
-          <button
-            className="btn btn-primary w-50 m-auto mb-2"
-            onClick={() => addSpecialty(id, title, price, 1)}
-          >
-            Add to Cart
-          </button>
-        </div>
+      <div className="card text-center">
+        <img src={imgSrc} alt="Custom Pizza" className="card-img-top" />
+        <span className="mx-2 fs-3">{title}</span>
+        <span className="fs-5">${price}</span>
+        <span>{description}</span>
+        <button
+          className="btn btn-primary w-50 m-auto mt-3 mb-2"
+          onClick={() => addSpecialty(id, title, price, 1)}
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   );
@@ -84,7 +87,7 @@ export default function Specialties() {
   if (desktopMode) {
     return (
       <>
-        <h4 className="my-3 text-center">
+        <h4 className="text-center my-3 fs-1">
           World Famous Sloppy Specialty Pizzas! (Medium Only)
         </h4>
         <div className="container mt-3 pb-5">
@@ -131,7 +134,7 @@ export default function Specialties() {
             World Famous Sloppy Specialty Pizzas! <br />
             (Medium Only)
           </h4>
-          <div className="row justify-content-center">
+          <div className="row justify-content-center mt-4">
             {renderCardMobile(
               "img/orderSloppyPizza-min.png",
               "Sloppy Joe Special",

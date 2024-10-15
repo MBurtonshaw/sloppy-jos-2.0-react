@@ -121,13 +121,46 @@ export default function Navbar() {
       <>
         <nav className="navbar-mobile">
           <div>
-            <a href="/" aria-label="Home">
-              <img
-                className="nav-pic-mobile"
-                src="img/spLogo.png"
-                alt="Joe's Sloppy Pizza"
-              />
-            </a>
+            <div className="dropdown">
+              <button
+                className="dropdown-toggle head_button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  className="nav-pic-mobile"
+                  src="img/spLogo.png"
+                  alt="Joe's Sloppy Pizza"
+                />
+              </button>
+              <ul className="dropdown-menu text-center">
+                <li>
+                  <a className="dropdown-item" href="/">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="/menu">
+                    Menu
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="/custom">
+                    Build Custom
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="/about">
+                    About
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="/contact">
+                    Contact
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
           <div className="nav_link_div">
             <a

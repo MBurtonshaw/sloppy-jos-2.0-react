@@ -51,11 +51,11 @@ export const Provider = ({ children }) => {
   };
 
   const fillCustomer = async (customer) => {
-    if (!customer || typeof customer !== 'object') {
+    if (!customer || typeof customer !== "object") {
       console.error("Invalid customer data");
       return;
     }
-  
+
     try {
       const {
         first_name,
@@ -63,14 +63,14 @@ export const Provider = ({ children }) => {
         email_address,
         phone_number,
         credit_card,
-        credit_cvv
+        credit_cvv,
       } = customer;
-  
-      const formattedPhone = phone_number.replace(/\D/g, '');
-      const formattedCreditCard = credit_card.replace(/\D/g, '');
-  
+
+      const formattedPhone = phone_number.replace(/\D/g, "");
+      const formattedCreditCard = credit_card.replace(/\D/g, "");
+
       setCustomer({
-        first_name: first_name,  // Use the desired key here
+        first_name: first_name, // Use the desired key here
         last_name: last_name,
         email_address: email_address,
         phone_number: formattedPhone,
@@ -100,47 +100,46 @@ export const Provider = ({ children }) => {
   };
 
   const addCustom = (pizza) => {
-    console.log(pizza);
+    console.log("Adding custom pizza:", pizza);
     setCart((prevCart) => {
-      const existingPizza = prevCart.customPizzas.find(
+      const existingPizzaIndex = prevCart.customPizzas.findIndex(
         (p) => p.id === pizza.id
       );
 
-      if (existingPizza) {
+      if (existingPizzaIndex !== -1) {
         // Increment the quantity of the existing pizza
+        const updatedPizzas = prevCart.customPizzas.map((p, index) =>
+          index === existingPizzaIndex
+            ? { ...p, quantity: (p.quantity || 1) + 1 }
+            : p
+        );
+
         return {
           ...prevCart,
-          customPizzas: prevCart.customPizzas.map((p) =>
-            p.id === pizza.id ? { ...p, quantity: (p.quantity || 1) + 1 } : p
-          ),
-          total: calculateTotal({
-            ...prevCart,
-            customPizzas: prevCart.customPizzas.map((p) =>
-              p.id === pizza.id ? { ...p, quantity: (p.quantity || 1) + 1 } : p
-            ),
-          }),
+          customPizzas: updatedPizzas,
+          total: calculateTotal({ ...prevCart, customPizzas: updatedPizzas }), // Recalculate total
         };
       }
 
       // If it's a new pizza, add it with a quantity of 1
       return {
         ...prevCart,
-        customPizzas: [...prevCart.customPizzas, { ...pizza, quantity: 1 }],
+        customPizzas: [...prevCart.customPizzas, { ...pizza, quantity: 1 }], // Always 1
         total: calculateTotal({
           ...prevCart,
           customPizzas: [...prevCart.customPizzas, { ...pizza, quantity: 1 }],
-        }),
+        }), // Recalculate total
       };
     });
   };
 
   const addSpecialty = (id, title, price, quantity) => {
-    console.log('Adding specialty with quantity:', quantity);
+    console.log("Adding specialty with quantity:", quantity);
     setCart((prevCart) => {
       const existingSpecialty = prevCart.specialtyPizzas.find(
         (pizza) => pizza.id === id
       );
-  
+
       if (existingSpecialty) {
         // Increment the quantity of the existing specialty pizza
         const updatedSpecialties = prevCart.specialtyPizzas.map((pizza) =>
@@ -148,7 +147,7 @@ export const Provider = ({ children }) => {
             ? { ...pizza, quantity: (pizza.quantity || 0) + quantity }
             : pizza
         );
-  
+
         return {
           ...prevCart,
           specialtyPizzas: updatedSpecialties,
@@ -158,7 +157,7 @@ export const Provider = ({ children }) => {
           }), // Recalculate total
         };
       }
-  
+
       // If it's a new specialty pizza, add it with the provided quantity
       return {
         ...prevCart,
@@ -178,10 +177,10 @@ export const Provider = ({ children }) => {
   };
 
   const addSide = (id, title, price, quantity) => {
-    console.log('Adding side with quantity:', quantity);
+    console.log("Adding side with quantity:", quantity);
     setCart((prevCart) => {
       const existingSide = prevCart.sides.find((side) => side.side_id === id);
-  
+
       if (existingSide) {
         // Increment the quantity of the existing side
         const updatedSides = prevCart.sides.map((side) =>
@@ -189,7 +188,7 @@ export const Provider = ({ children }) => {
             ? { ...side, quantity: (side.quantity || 0) + quantity }
             : side
         );
-  
+
         return {
           ...prevCart,
           sides: updatedSides,
@@ -199,7 +198,7 @@ export const Provider = ({ children }) => {
           }), // Recalculate total
         };
       }
-  
+
       // If it's a new side, add it with the provided quantity
       return {
         ...prevCart,
@@ -328,20 +327,20 @@ export const Provider = ({ children }) => {
 
   async function submitOrder() {
     const new_id = await data.createCart();
-    
+
     // Update cart with the new ID
-    setCart(prevCart => {
+    setCart((prevCart) => {
       const updatedCart = {
         ...prevCart,
-        id: new_id // Add the new ID property
+        id: new_id, // Add the new ID property
       };
-  
+
       // You can now call other data methods that depend on the updated cart
       data.addSpecialties(updatedCart);
       data.addCustoms(updatedCart);
       data.addSides(updatedCart);
       data.setPrice(updatedCart);
-  
+
       return updatedCart; // Return the updated cart
     });
   }
@@ -363,7 +362,6 @@ export const Provider = ({ children }) => {
     localStorage.removeItem("cart");
     setCustomer({});
   }
-  
 
   const value = {
     customer,
@@ -380,7 +378,7 @@ export const Provider = ({ children }) => {
       removeSide,
       submitOrder,
       submitCustomer,
-      restartCart
+      restartCart,
     },
   };
 

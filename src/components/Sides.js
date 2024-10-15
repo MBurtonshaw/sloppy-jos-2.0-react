@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { Context } from "../contexts/context.js";
+import { toast } from "react-toastify";
 
 const sidesData = [
   {
@@ -76,8 +77,16 @@ export default function Sides() {
     };
   }, []);
 
+  function notify() {
+    toast.success(`Side order added to cart`, {
+      position: "top-center",
+      autoClose: 1500,
+      theme: "light",
+    });
+  }
+
   const addSide = (id, title, price, quantity) => {
-    console.log('side quantity: ' + quantity)
+    notify();
     actions.addSide(id, title, price, quantity);
   };
 
@@ -103,29 +112,23 @@ export default function Sides() {
 
   const renderCardMobile = (side) => (
     <div className="pb-4 mx-2">
-      <h4 className="text-center pb-3 pt-4">{side.title}</h4>
-      <div className="">
-        <div className="card text-center">
-          <img src={side.imgSrc} alt="Custom Pizza" className="card-img-top" />
-          <p className="mx-2">
-            {side.title}
-            <br />${side.price}
-            <br />
-            {side.description}
-          </p>
-          <button
-            className="btn btn-primary w-50 m-auto mb-2"
-            onClick={() => addSide(side.id, side.title, side.price, 1)}
-          >
-            Add to Cart
-          </button>
-        </div>
+      <div className="card text-center">
+        <img src={side.imgSrc} alt="Custom Pizza" className="card-img-top" />
+        <span className="mx-2 fs-3">{side.title}</span>
+        <span className="fs-5">${side.price}</span>
+        <span>{side.description}</span>
+        <button
+          className="btn btn-primary w-50 m-auto mt-3 mb-2"
+          onClick={() => addSide(side.id, side.title, side.price, 1)}
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   );
 
   function sideRenderer() {
-    if(deviceMode === 'mobile' || deviceMode === 'tablet') {
+    if (deviceMode === "mobile" || deviceMode === "tablet") {
       return sidesData.map(renderCardMobile);
     }
     return sidesData.map(renderCard);

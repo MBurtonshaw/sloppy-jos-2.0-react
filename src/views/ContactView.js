@@ -1,5 +1,5 @@
 export default function Contact() {
-  if (window.innerWidth < 800) {
+  if (window.innerWidth <= 800) {
     return (
       <>
         <div class="container w-75 m-auto yellow_background">

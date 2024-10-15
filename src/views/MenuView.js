@@ -38,9 +38,9 @@ export default function Menu() {
   if (desktopMode) {
     return (
       <>
-        <div className="container mt-3 pb-5">
+        <div className="container mt-5 pb-5">
           <div className="row justify-content-center">
-            <h4 className="text-center my-3">
+            <h4 className="text-center my-3 fs-1">
               Build Your Own and Make it Extra Sloppy!
             </h4>
             <div className="col-11 col-lg-5 grid-item p-0">
@@ -72,7 +72,9 @@ export default function Menu() {
     return (
       <>
         <div className="pb-5 mx-2">
-          <h4 className="text-center p-4 pt-5 fs-1">Build Your Own</h4>
+          <h4 className="text-center p-4 pt-5 fs-1">
+            Build Your Own and Make it Extra Sloppy!
+          </h4>
           <div className="">
             <div className="card text-center">
               <a className="nonchalant" href="/custom">
@@ -81,8 +83,8 @@ export default function Menu() {
                   alt="Custom Pizza"
                   className="card-img-top"
                 />
-                <p className="">Create Your Own Sloppy Pizza!</p>
-                <button className="btn btn-primary w-50 m-auto m-2 mb-2">
+                <p className="fs-4 pt-1">Create Your Own Sloppy Pizza!</p>
+                <button className="btn btn-primary w-50 m-auto mb-2">
                   Build Now
                 </button>
               </a>
