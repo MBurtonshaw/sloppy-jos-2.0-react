@@ -3,7 +3,7 @@ import { Context } from "../contexts/context.js";
 import { toast } from "react-toastify";
 
 export default function Custom() {
-  const { actions, data } = useContext(Context);
+  const { actions } = useContext(Context);
 
   const availableToppings = [
     { name: "Pepperoni", id: 1 },
@@ -49,6 +49,32 @@ export default function Custom() {
       autoClose: 1500,
       theme: "light",
     });
+  }
+
+  function crustMapper() {
+    return (
+      <div className="form-group">
+        <h4 className="py-2">Choose Your Crust</h4>
+        <select className="form-control" onChange={handleCrustChange}>
+          <option>Regular</option>
+          <option>Thin </option>
+          <option>Pan</option>
+        </select>
+      </div>
+    );
+  }
+
+  function sauceMapper() {
+    return (
+      <div className="form-group">
+        <h4 className="mt-4 py-2">Choose Your Sauce</h4>
+        <select className="form-control" onChange={handleSauceChange}>
+          <option>Traditional</option>
+          <option>Basil-Pesto</option>
+          <option>Garlic Parmesean</option>
+        </select>
+      </div>
+    );
   }
 
   const addPizzaToCart = () => {
@@ -116,7 +142,6 @@ export default function Custom() {
 
   const handleToppingChange = (topping) => {
     const { id, name } = topping; // Destructure ID and name from the topping
-    console.log(topping.id);
     if (toppingIds.includes(id)) {
       // If the topping ID is already selected, remove it
       setToppingIds(toppingIds.filter((t) => t !== id)); // Remove ID
@@ -140,7 +165,7 @@ export default function Custom() {
   }, []);
 
   function toppingsMapped() {
-    if (tabletMode) {
+    if (desktopMode || tabletMode) {
       return availableToppings.map((topping) => (
         <div className="col-xs-6 col-sm-4" key={topping.id}>
           <input
@@ -166,226 +191,101 @@ export default function Custom() {
     }
   }
 
+  const sizeMapPiece = (size) => {
+    function dataFiller() {
+      return (
+        <>
+          <img src={size.src} alt="Small Size" className="card-img-top" />
+          <div className="card-body text-center">
+            <label className="card-title mobile_card_text">{size.name}</label>
+            <input
+              type="radio"
+              name="size"
+              value={size.name}
+              checked={size.name === size_name}
+              onChange={handleSizeChange}
+            />
+          </div>
+          <div className="description">
+            {size.price}
+            <br />
+            {size.description}
+          </div>
+        </>
+      );
+    }
+
+    if (mobileMode || tabletMode) {
+      dataFiller();
+    }
+    return <div className="card">{dataFiller()}</div>;
+  };
+
+  const sizeList = [
+    {
+      name: "Small",
+      src: "img/smallPizza.png",
+      price: 15,
+      description: "A small pizza is perfect for 1-2 people.",
+    },
+    {
+      name: "Medium",
+      src: "img/mediumPizza.png",
+      price: 18,
+      description: "A medium pizza is ideal for 2-3 people.",
+    },
+    {
+      name: "Large",
+      src: "img/largePizza.png",
+      price: 22,
+      description: "A large pizza serves 3-4 people.",
+    },
+    {
+      name: "Half-Sheet",
+      src: "img/halfSheetPizza.png",
+      price: 30,
+      description: "A half-sheet pizza is great for a small gathering.",
+    },
+    {
+      name: "Full-Sheet",
+      src: "img/fullSheetPizza.png",
+      price: 37.5,
+      description: "A full-sheet pizza is perfect for larger groups.",
+    },
+  ];
+  console.log(sizeList.length);
+
   function sizesMapped() {
     if (tabletMode) {
       return (
         <div className="">
-          <div className="card w-75 m-auto mb-4">
-            <img
-              src="img/smallPizza.png"
-              alt="Small Size"
-              className="card-img-top"
-            />
-            <div className="card-body text-center">
-              <label className="card-title mobile_card_text">Small</label>
-              <input
-                type="radio"
-                name="size"
-                value="Small"
-                defaultChecked={true}
-                onChange={handleSizeChange}
-              />
+          {sizeList.map((size) => (
+            <div className="card w-75 m-auto mb-4" key={size.name}>
+              {sizeMapPiece(size)}
             </div>
-            <div className="description">
-              $15
-              <br />A small pizza is perfect for 1-2 people.
-            </div>
-          </div>
-
-          <div className="card w-75 m-auto mb-4">
-            <img
-              src="img/mediumPizza.png"
-              alt="Medium Size"
-              className="card-img-top"
-            />
-            <div className="card-body text-center">
-              <label className="card-title mobile_card_text">Medium</label>
-              <input
-                type="radio"
-                name="size"
-                value="Medium"
-                onChange={handleSizeChange}
-              />
-            </div>
-            <div className="description">
-              $18.00
-              <br />A medium pizza is ideal for 2-3 people.
-            </div>
-          </div>
-
-          <div className="card w-75 m-auto mb-4">
-            <img
-              src="img/largePizza.png"
-              alt="Large Size"
-              className="card-img-top"
-            />
-            <div className="card-body text-center">
-              <label className="card-title mobile_card_text">Large</label>
-              <input
-                type="radio"
-                name="size"
-                value="Large"
-                onChange={handleSizeChange}
-              />
-            </div>
-            <div className="description">
-              $22.00
-              <br />A large pizza serves 3-4 people.
-            </div>
-          </div>
-
-          <div className="card w-75 m-auto mb-4">
-            <img
-              src="img/halfSheetPizza.png"
-              alt="Half-Sheet Size"
-              className="card-img-top"
-            />
-            <div className="card-body text-center">
-              <label className="card-title mobile_card_text">Half-Sheet</label>
-              <input
-                type="radio"
-                name="size"
-                value="Half-Sheet"
-                onChange={handleSizeChange}
-              />
-            </div>
-            <div className="description">
-              $30.00
-              <br />A half-sheet pizza is great for a small gathering.
-            </div>
-          </div>
-
-          <div className="card w-75 m-auto mb-4">
-            <img
-              src="img/fullSheetPizza.png"
-              alt="Full-Sheet Size"
-              className="card-img-top"
-            />
-            <div className="card-body text-center">
-              <label className="card-title mobile_card_text">Full-Sheet</label>
-              <input
-                type="radio"
-                name="size"
-                value="Full-Sheet"
-                onChange={handleSizeChange}
-              />
-            </div>
-            <div className="description">
-              $37.50
-              <br />A full-sheet pizza is perfect for larger groups.
-            </div>
-          </div>
+          ))}
         </div>
       );
     }
     if (mobileMode) {
       return (
         <div className="">
-          <div className="card w-100 m-auto mb-3">
-            <img
-              src="img/smallPizza.png"
-              alt="Small Size"
-              className="card-img-top"
-            />
-            <div className="card-body text-center">
-              <label className="card-title mobile_card_text">Small</label>
-              <input
-                type="radio"
-                name="size"
-                value="Small"
-                defaultChecked={true}
-                onChange={handleSizeChange}
-              />
+          {sizeList.map((size) => (
+            <div className="card w-100 m-auto mb-3" key={size.name}>
+              {sizeMapPiece(size)}
             </div>
-            <div className="description">
-              $15
-              <br />A small pizza is perfect for 1-2 people.
+          ))}
+        </div>
+      );
+    }
+    if (desktopMode) {
+      return (
+        <div className="row justify-content-center">
+          {sizeList.map((size) => (
+            <div className="col-xs-6 col-sm-2" key={size.name}>
+              {sizeMapPiece(size)}
             </div>
-          </div>
-
-          <div className="card w-100 m-auto mb-3">
-            <img
-              src="img/mediumPizza.png"
-              alt="Medium Size"
-              className="card-img-top"
-            />
-            <div className="card-body text-center">
-              <label className="card-title mobile_card_text">Medium</label>
-              <input
-                type="radio"
-                name="size"
-                value="Medium"
-                onChange={handleSizeChange}
-              />
-            </div>
-            <div className="description">
-              $18.00
-              <br />A medium pizza is ideal for 2-3 people.
-            </div>
-          </div>
-
-          <div className="card w-100 m-auto mb-3">
-            <img
-              src="img/largePizza.png"
-              alt="Large Size"
-              className="card-img-top"
-            />
-            <div className="card-body text-center">
-              <label className="card-title mobile_card_text">Large</label>
-              <input
-                type="radio"
-                name="size"
-                value="Large"
-                onChange={handleSizeChange}
-              />
-            </div>
-            <div className="description">
-              $22.00
-              <br />A large pizza serves 3-4 people.
-            </div>
-          </div>
-
-          <div className="card w-100 m-auto mb-3">
-            <img
-              src="img/halfSheetPizza.png"
-              alt="Half-Sheet Size"
-              className="card-img-top"
-            />
-            <div className="card-body text-center">
-              <label className="card-title mobile_card_text">Half-Sheet</label>
-              <input
-                type="radio"
-                name="size"
-                value="Half-Sheet"
-                onChange={handleSizeChange}
-              />
-            </div>
-            <div className="description">
-              $30.00
-              <br />A half-sheet pizza is great for a small gathering.
-            </div>
-          </div>
-
-          <div className="card w-100 m-auto mb-3">
-            <img
-              src="img/fullSheetPizza.png"
-              alt="Full-Sheet Size"
-              className="card-img-top"
-            />
-            <div className="card-body text-center">
-              <label className="card-title mobile_card_text">Full-Sheet</label>
-              <input
-                type="radio"
-                name="size"
-                value="Full-Sheet"
-                onChange={handleSizeChange}
-              />
-            </div>
-            <div className="description">
-              $37.50
-              <br />A full-sheet pizza is perfect for larger groups.
-            </div>
-          </div>
+          ))}
         </div>
       );
     }
@@ -393,173 +293,35 @@ export default function Custom() {
 
   if (desktopMode) {
     return (
-      <>
-        <div className="container mt-5">
-          <h2 className="text-center">Create Your Custom Sloppy Pizza</h2>
+      <div className="container mt-5">
+        <h2 className="text-center">Create Your Custom Sloppy Pizza</h2>
 
-          <div className="container text-center pb-5">
-            <h4 className="text-left my-4 mt-5">Choose Your Pizza Size</h4>
-            <div className="row justify-content-center">
-              <div className="col-xs-6 col-sm-2">
-                <div className="card">
-                  <img
-                    src="img/smallPizza.png"
-                    alt="Small Size"
-                    className="card-img-top"
-                  />
-                  <div className="card-body text-center">
-                    <h5 className="card-title">Small</h5>
-                    <input
-                      type="radio"
-                      name="size"
-                      value="Small"
-                      defaultChecked={true}
-                      onChange={handleSizeChange}
-                    />
-                  </div>
-                  <div className="description">
-                    $15
-                    <br />A small pizza is perfect for 1-2 people.
-                  </div>
-                </div>
-              </div>
-              <div className="col-xs-6 col-sm-2">
-                <div className="card">
-                  <img
-                    src="img/mediumPizza.png"
-                    alt="Medium Size"
-                    className="card-img-top"
-                  />
-                  <div className="card-body text-center">
-                    <h5 className="card-title">Medium</h5>
-                    <input
-                      type="radio"
-                      name="size"
-                      value="Medium"
-                      onChange={handleSizeChange}
-                    />
-                  </div>
-                  <div className="description">
-                    $18.00
-                    <br />A medium pizza is ideal for 2-3 people.
-                  </div>
-                </div>
-              </div>
-              <div className="col-xs-6 col-sm-2">
-                <div className="card">
-                  <img
-                    src="img/largePizza.png"
-                    alt="Large Size"
-                    className="card-img-top"
-                  />
-                  <div className="card-body text-center">
-                    <h5 className="card-title">Large</h5>
-                    <input
-                      type="radio"
-                      name="size"
-                      value="Large"
-                      onChange={handleSizeChange}
-                    />
-                  </div>
-                  <div className="description">
-                    $22.00
-                    <br />A large pizza serves 3-4 people.
-                  </div>
-                </div>
-              </div>
-              <div className="col-xs-6 col-sm-2">
-                <div className="card">
-                  <img
-                    src="img/halfSheetPizza.png"
-                    alt="Half-Sheet Size"
-                    className="card-img-top"
-                  />
-                  <div className="card-body text-center">
-                    <h5 className="card-title">Half-Sheet</h5>
-                    <input
-                      type="radio"
-                      name="size"
-                      value="Half-Sheet"
-                      onChange={handleSizeChange}
-                    />
-                  </div>
-                  <div className="description">
-                    $30.00
-                    <br />A half-sheet pizza is great for a small gathering.
-                  </div>
-                </div>
-              </div>
-              <div className="col-xs-6 col-sm-2">
-                <div className="card">
-                  <img
-                    src="img/fullSheetPizza.png"
-                    alt="Full-Sheet Size"
-                    className="card-img-top"
-                  />
-                  <div className="card-body text-center">
-                    <h5 className="card-title">Full-Sheet</h5>
-                    <input
-                      type="radio"
-                      name="size"
-                      value="Full-Sheet"
-                      onChange={handleSizeChange}
-                    />
-                  </div>
-                  <div className="description">
-                    $37.50
-                    <br />A full-sheet pizza is perfect for larger groups.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="container text-center pb-5">
+          <h4 className="text-left my-4 mt-5">Choose Your Pizza Size</h4>
 
-          <div className="form-group">
-            <h4 className="py-2">Choose Your Crust</h4>
-            <select className="form-control" onChange={handleCrustChange}>
-              <option>Regular</option>
-              <option>Thin </option>
-              <option>Pan</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <h4 className="mt-4 py-2">Choose Your Sauce</h4>
-            <select className="form-control" onChange={handleSauceChange}>
-              <option>Traditional</option>
-              <option>Basil-Pesto</option>
-              <option>Garlic Parmesean</option>
-            </select>
-          </div>
-
-          <div className="form-group w-100 m-auto">
-            <h4 className="mb-3 mt-5">
-              Choose Your Sloppy Toppings - Only $1 Per Topping!
-            </h4>
-            <div className="row">
-              {availableToppings.map((topping) => (
-                <div className="col-xs-6 col-sm-4" key={topping.id}>
-                  <input
-                    type="checkbox"
-                    checked={toppingIds.includes(topping.id)} // Check if the topping is selected
-                    onChange={() => handleToppingChange(topping)} // Pass the whole topping object
-                  />
-                  <label className="px-1 topping_label">{topping.name}</label>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="text-center p-3">
-            <button
-              type="button"
-              className="btn btn-primary p-2 px-5"
-              onClick={addPizzaToCart}
-            >
-              Add to Cart
-            </button>
-          </div>
+          {sizesMapped()}
         </div>
-      </>
+
+        {crustMapper()}
+
+        {sauceMapper()}
+
+        <div className="form-group w-100 m-auto">
+          <h4 className="mb-3 mt-5">
+            Choose Your Sloppy Toppings - Only $1 Per Topping!
+          </h4>
+          <div className="row">{toppingsMapped()}</div>
+        </div>
+        <div className="text-center p-3">
+          <button
+            type="button"
+            className="btn btn-primary p-2 px-5"
+            onClick={addPizzaToCart}
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
     );
   }
 
@@ -574,23 +336,9 @@ export default function Custom() {
             {sizesMapped()}
           </div>
 
-          <div className="form-group">
-            <h4 className="py-2 text-center">Choose Your Crust</h4>
-            <select className="form-control" onChange={handleCrustChange}>
-              <option>Regular</option>
-              <option>Thin </option>
-              <option>Pan</option>
-            </select>
-          </div>
+          {crustMapper()}
 
-          <div className="form-group">
-            <h4 className="mt-4 py-2 text-center">Choose Your Sauce</h4>
-            <select className="form-control" onChange={handleSauceChange}>
-              <option>Traditional</option>
-              <option>Basil-Pesto</option>
-              <option>Garlic Parmesean</option>
-            </select>
-          </div>
+          {sauceMapper()}
 
           <div className="form-group w-100 m-auto">
             <h4 className="mb-3 mt-5 text-center">
@@ -622,23 +370,9 @@ export default function Custom() {
             {sizesMapped()}
           </div>
 
-          <div className="form-group">
-            <h4 className="py-2 text-center">Choose Your Crust</h4>
-            <select className="form-control" onChange={handleCrustChange}>
-              <option>Regular</option>
-              <option>Thin </option>
-              <option>Pan</option>
-            </select>
-          </div>
+          {crustMapper()}
 
-          <div className="form-group">
-            <h4 className="mt-4 py-2 text-center">Choose Your Sauce</h4>
-            <select className="form-control" onChange={handleSauceChange}>
-              <option>Traditional</option>
-              <option>Basil-Pesto</option>
-              <option>Garlic Parmesean</option>
-            </select>
-          </div>
+          {sauceMapper()}
 
           <div className="form-group w-100 m-auto">
             <h4 className="mb-3 mt-5 text-center">

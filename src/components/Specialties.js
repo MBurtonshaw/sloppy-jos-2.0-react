@@ -10,11 +10,11 @@ export default function Specialties() {
   const { actions } = useContext(Context);
 
   const updateMode = () => {
-    if (window.innerWidth <= 779) {
+    if (window.innerWidth <= 600) {
       setDesktopMode(false);
       setTabletMode(false);
       setMobileMode(true);
-    } else if (window.innerWidth <= 1104) {
+    } else if (window.innerWidth <= 900) {
       setDesktopMode(false);
       setTabletMode(true);
       setMobileMode(false);
@@ -47,42 +47,58 @@ export default function Specialties() {
     actions.addSpecialty(id, title, price, quantity);
   };
 
-  const renderCard = (imgSrc, title, price, description, id) => (
-    <div className="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
-      <div className="card grid-item">
-        <img src={imgSrc} alt={title} className="card-img-top" />
-        <p className="card-text description">
-          {title}
-          <br />${price}
-          <br />
-          {description}
-        </p>
-        <button
-          className="btn btn-primary add-to-cart-btn"
-          onClick={() => addSpecialty(id, title, price, 1)}
-        >
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  );
+  const renderCard = (imgSrc, title, price, description, id) => {
+    function cardInfoSmall() {
+      return (
+        <div className="card text-center">
+          <img src={imgSrc} alt="Custom Pizza" className="card-img-top" />
+          <span className="mx-2 fs-3">{title}</span>
+          <span className="fs-5">${price}</span>
+          <span>{description}</span>
+          <button
+            className="btn btn-primary w-50 m-auto mt-3 mb-2"
+            onClick={() => addSpecialty(id, title, price, 1)}
+          >
+            Add to Cart
+          </button>
+        </div>
+      );
+    }
 
-  const renderCardMobile = (imgSrc, title, price, description, id) => (
-    <div className="pb-4 mx-2">
-      <div className="card text-center">
-        <img src={imgSrc} alt="Custom Pizza" className="card-img-top" />
-        <span className="mx-2 fs-3">{title}</span>
-        <span className="fs-5">${price}</span>
-        <span>{description}</span>
-        <button
-          className="btn btn-primary w-50 m-auto mt-3 mb-2"
-          onClick={() => addSpecialty(id, title, price, 1)}
-        >
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  );
+    function cardInfoLarge() {
+      return (
+        <>
+          <img src={imgSrc} alt={title} className="card-img-top" />
+          <p className="card-text description">
+            {title}
+            <br />${price}
+            <br />
+            {description}
+          </p>
+          <button
+            className="btn btn-primary add-to-cart-btn"
+            onClick={() => addSpecialty(id, title, price, 1)}
+          >
+            Add to Cart
+          </button>
+        </>
+      );
+    }
+
+    if (tabletMode) {
+      return <div className="pb-4 w-50 mx-auto">{cardInfoSmall()}</div>;
+    }
+    if (mobileMode) {
+      return <div className="pb-4 mx-2">{cardInfoSmall()}</div>;
+    }
+    if (desktopMode) {
+      return (
+        <div className="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
+          <div className="card grid-item">{cardInfoLarge()}</div>
+        </div>
+      );
+    }
+  };
 
   if (desktopMode) {
     return (
@@ -94,23 +110,23 @@ export default function Specialties() {
           <div className="row justify-content-center">
             {renderCard(
               "img/orderSloppyPizza-min.png",
-              "Sloppy Joe Special",
+              "Sloppy Jo Special",
               25,
-              "Loaded with seasoned ground beef, tangy tomato sauce, and a melty cheese blend that brings the classic Sloppy Joe to your plate",
+              "Loaded with seasoned ground beef, a melty cheese blend, and our signature Sloppy Jo Sauce, that brings the classic Sloppy Jo to your plate",
               1
             )}
             {renderCard(
               "img/orderSupreme-min.png",
               "The Sloppy Supreme",
               23,
-              "Pepperoni, sausage, bell peppers, onions, and black olives, all layered over a rich tomato base and gooey mozzarella",
+              "Pepperoni, bacon, Italian sausage, mushrooms, black and green olives, bell pepper, and onions all layered over a rich tomato base and gooey mozzarella",
               2
             )}
             {renderCard(
               "img/orderMeatlovers-min.png",
-              "Sloppy's Carnivore Delight",
+              "Sloppy Carnivore Delight",
               22,
-              "Piled high with pepperoni, sausage, ham, and bacon, all perfectly balanced by a hearty tomato sauce and melted cheese",
+              "Piled high with pepperoni, bacon, ham, Italian sausage, prosciutto, and meatballs all perfectly balanced by a hearty tomato sauce and melted cheese",
               3
             )}
             {renderCard(
@@ -135,28 +151,28 @@ export default function Specialties() {
             (Medium Only)
           </h4>
           <div className="row justify-content-center mt-4">
-            {renderCardMobile(
+            {renderCard(
               "img/orderSloppyPizza-min.png",
-              "Sloppy Joe Special",
+              "Sloppy Jo Special",
               25,
-              "Loaded with seasoned ground beef, tangy tomato sauce, and a melty cheese blend that brings the classic Sloppy Joe to your plate",
+              "Loaded with seasoned ground beef, a melty cheese blend, and our signature Sloppy Jo Sauce, that brings the classic Sloppy Jo to your plate",
               1
             )}
-            {renderCardMobile(
+            {renderCard(
               "img/orderSupreme-min.png",
               "The Sloppy Supreme",
               23,
-              "Pepperoni, sausage, bell peppers, onions, and black olives, all layered over a rich tomato base and gooey mozzarella",
+              "Pepperoni, bacon, Italian sausage, mushrooms, black and green olives, bell pepper, and onions all layered over a rich tomato base and gooey mozzarella",
               2
             )}
-            {renderCardMobile(
+            {renderCard(
               "img/orderMeatlovers-min.png",
-              "Sloppy's Carnivore Delight",
+              "Sloppy Carnivore Delight",
               22,
-              "Piled high with pepperoni, sausage, ham, and bacon, all perfectly balanced by a hearty tomato sauce and melted cheese",
+              "Piled high with pepperoni, bacon, ham, Italian sausage, prosciutto, and meatballs all perfectly balanced by a hearty tomato sauce and melted cheese",
               3
             )}
-            {renderCardMobile(
+            {renderCard(
               "img/orderZestyTrio-min.png",
               "Jo's Zesty Trio",
               23.5,

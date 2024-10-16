@@ -60,9 +60,9 @@ export default function Sides() {
 
   const updateMode = () => {
     const width = window.innerWidth;
-    if (width <= 779) {
+    if (width <= 600) {
       setDeviceMode("mobile");
-    } else if (width <= 1104) {
+    } else if (width <= 900) {
       setDeviceMode("tablet");
     } else {
       setDeviceMode("desktop");
@@ -110,22 +110,52 @@ export default function Sides() {
     </div>
   );
 
-  const renderCardMobile = (side) => (
-    <div className="pb-4 mx-2">
-      <div className="card text-center">
-        <img src={side.imgSrc} alt="Custom Pizza" className="card-img-top" />
-        <span className="mx-2 fs-3">{side.title}</span>
-        <span className="fs-5">${side.price}</span>
-        <span>{side.description}</span>
-        <button
-          className="btn btn-primary w-50 m-auto mt-3 mb-2"
-          onClick={() => addSide(side.id, side.title, side.price, 1)}
-        >
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  );
+  const renderCardMobile = (side) => {
+    if (deviceMode === "mobile") {
+      return (
+        <div className="pb-4 mx-2">
+          <div className="card text-center">
+            <img
+              src={side.imgSrc}
+              alt="Custom Pizza"
+              className="card-img-top"
+            />
+            <span className="mx-2 fs-3">{side.title}</span>
+            <span className="fs-5">${side.price}</span>
+            <span>{side.description}</span>
+            <button
+              className="btn btn-primary w-50 m-auto mt-3 mb-2"
+              onClick={() => addSide(side.id, side.title, side.price, 1)}
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      );
+    }
+    if (deviceMode === "tablet") {
+      return (
+        <div className="pb-4 mx-2 w-50 mx-auto">
+          <div className="card text-center">
+            <img
+              src={side.imgSrc}
+              alt="Custom Pizza"
+              className="card-img-top"
+            />
+            <span className="mx-2 fs-3">{side.title}</span>
+            <span className="fs-5">${side.price}</span>
+            <span>{side.description}</span>
+            <button
+              className="btn btn-primary w-50 m-auto mt-3 mb-2"
+              onClick={() => addSide(side.id, side.title, side.price, 1)}
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      );
+    }
+  };
 
   function sideRenderer() {
     if (deviceMode === "mobile" || deviceMode === "tablet") {
@@ -134,10 +164,44 @@ export default function Sides() {
     return sidesData.map(renderCard);
   }
 
+  if (deviceMode === "mobile") {
+    return (
+      <>
+        <h4 className="text-center my-3 fs-1">Order Our Sloppy Sides!</h4>
+        <div className="pb-5 mx-2">
+          <div
+            className={`row justify-content-center ${
+              deviceMode === "desktop" ? "" : "text-center"
+            }`}
+          >
+            {sideRenderer()}
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (deviceMode === "tablet") {
+    return (
+      <>
+        <h4 className="text-center my-3 fs-1">Order Our Sloppy Sides!</h4>
+        <div className="pb-5 mx-2">
+          <div
+            className={`row justify-content-center ${
+              deviceMode === "desktop" ? "" : "text-center"
+            }`}
+          >
+            {sideRenderer()}
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <h4 className="text-center my-3 fs-1">Order Our Sloppy Sides!</h4>
-      <div className="container pb-5">
+      <div className="container mx-auto pb-5 mx-2">
         <div
           className={`row justify-content-center ${
             deviceMode === "desktop" ? "" : "text-center"

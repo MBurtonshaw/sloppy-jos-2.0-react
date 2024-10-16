@@ -11,11 +11,11 @@ export default function Menu() {
   const { actions } = useContext(Context);
 
   const updateMode = () => {
-    if (window.innerWidth <= 779) {
+    if (window.innerWidth <= 600) {
       setDesktopMode(false);
       setTabletMode(false);
       setMobileMode(true);
-    } else if (window.innerWidth <= 1104) {
+    } else if (window.innerWidth <= 900) {
       setDesktopMode(false);
       setTabletMode(true);
       setMobileMode(false);
@@ -54,7 +54,6 @@ export default function Menu() {
                   <p className="card-text description">
                     Create Your Own Sloppy Pizza!
                   </p>
-
                   <button className="btn btn-primary add-to-cart-btn">
                     Build Now
                   </button>
@@ -68,7 +67,35 @@ export default function Menu() {
       </>
     );
   }
-  if (tabletMode || mobileMode) {
+  if (tabletMode) {
+    return (
+      <>
+        <div className="pb-5 px-5 w-75 mx-auto">
+          <h4 className="text-center p-4 pt-5 fs-1">
+            Build Your Own and Make it Extra Sloppy!
+          </h4>
+          <div className="">
+            <div className="card text-center">
+              <a className="nonchalant" href="/custom">
+                <img
+                  src="img/Pizzas3.png"
+                  alt="Custom Pizza"
+                  className="card-img-top"
+                />
+                <p className="fs-4 pt-1">Create Your Own Sloppy Pizza!</p>
+                <button className="btn btn-primary w-50 m-auto mb-2">
+                  Build Now
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+        <Specialties />
+        <Sides />
+      </>
+    );
+  }
+  if (mobileMode) {
     return (
       <>
         <div className="pb-5 mx-2">
@@ -96,26 +123,4 @@ export default function Menu() {
       </>
     );
   }
-  // if (mobileMode) {
-  //   return (
-  //     <>
-  //       <div className="container mt-3" v-else>
-  //         <h4 className="text-center my-3">Build Your Own!</h4>
-  //         <div className="col-12 col-lg-5 m-auto">
-  //           <div className="card text-center">
-  //             <a href="/custom">
-  //               <img
-  //                 src="img/Pizzas3.png"
-  //                 alt="Custom Pizza"
-  //                 className="card-img-top"
-  //               />
-  //               <p className="">Create Your Own Sloppy Pizza!</p>
-  //               <button className="btn btn-primary">Build Now</button>
-  //             </a>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </>
-  //   );
-  // }
 }
