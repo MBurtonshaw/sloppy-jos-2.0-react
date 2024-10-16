@@ -104,17 +104,11 @@ export default function CustomerInfo() {
       !phoneRegEx.test(customer.phone_number)
     ) {
       window.alert("Please enter a valid US phone number - 10 digits");
-    } else if (
-      !customer.credit_card ||
-      !creditCardRegEx.test(credit_card)
-    ) {
+    } else if (!customer.credit_card || !creditCardRegEx.test(credit_card)) {
       window.alert("Please enter a valid 16-digit credit card number");
     } else if (!credit_expiry) {
       window.alert("Please enter credit card expiration date");
-    } else if (
-      !customer.credit_cvv ||
-      !cvvRegEx.test(credit_cvv)
-    ) {
+    } else if (!customer.credit_cvv || !cvvRegEx.test(credit_cvv)) {
       window.alert("Please enter a valid 3-digit credit card CVV");
     } else if (delivery === "") {
       window.alert("Please enter delivery or takeout");
@@ -262,11 +256,17 @@ export default function CustomerInfo() {
     return (
       <>
         <div className="w-50 m-auto">
-          <h1 className="customer-information text-start my-5">
+          <h1 className="customer-information text-start mt-5 mb-3 text-center">
             Customer Information
           </h1>
           <div className="mb-4">
             <form>
+              <div className="text-center mb-4">
+                <span>This app is for demonstration purposes only. </span>
+                <p>
+                  Even so, please do not enter any actual sensitive information.
+                </p>
+              </div>
               <table className="table">
                 <tbody>
                   <tr>
@@ -425,7 +425,12 @@ export default function CustomerInfo() {
     return (
       <>
         <div className="w-100 m-auto text-center">
-          <h1 className="customer-information my-5">Customer Information</h1>
+          <h1 className="customer-information mt-5 mb-3">
+            Customer Information
+          </h1>
+          <span>This app is for demonstration purposes only. </span>
+          <br></br>
+          <p>Even so, please do not enter any actual sensitive information.</p>
           <div className="mb-4">
             <form className="w-75 m-auto">
               <div className="py-4">

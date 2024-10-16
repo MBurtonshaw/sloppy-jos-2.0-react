@@ -326,15 +326,16 @@ export const Provider = ({ children }) => {
   };
 
   async function submitOrder() {
+    console.log("submitOrder called");
     const new_id = await data.createCart();
-
+    console.log("New cart ID from API:", new_id);
     // Update cart with the new ID
     setCart((prevCart) => {
       const updatedCart = {
         ...prevCart,
         id: new_id, // Add the new ID property
       };
-
+      console.log("Updated cart after creation:", updatedCart);
       // You can now call other data methods that depend on the updated cart
       data.addSpecialties(updatedCart);
       data.addCustoms(updatedCart);
@@ -354,14 +355,15 @@ export const Provider = ({ children }) => {
 
   async function restartCart() {
     setCart({
-      specialtyPizzas: [],
-      customPizzas: [],
-      sides: [],
-      total: 0,
+        specialtyPizzas: [],
+        customPizzas: [],
+        sides: [],
+        total: 0,
     });
-    localStorage.removeItem("cart");
-    setCustomer({});
-  }
+    localStorage.removeItem("cart"); // Clear local storage
+    setCustomer({}); // Reset customer state
+    console.log("Cart and customer state reset.");
+}
 
   const value = {
     customer,

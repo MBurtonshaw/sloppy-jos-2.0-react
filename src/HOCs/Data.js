@@ -90,7 +90,8 @@ export default class Data {
         } catch (error) {
           console.error(
             `Failed to add custom pizza to cart ID ${cart.id}:`,
-            error
+            error.message,
+            error.response ? await error.response.json() : null
           );
         }
       });
