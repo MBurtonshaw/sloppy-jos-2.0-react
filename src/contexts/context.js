@@ -260,29 +260,29 @@ export const Provider = ({ children }) => {
   const removeSide = (idToRemove) => {
     setCart((prevCart) => {
       const sideToRemove = prevCart.sides.find(
-        (side) => side.id === idToRemove
+        (side) => side.side_id === idToRemove // Use side_id here
       );
-
+  
       if (sideToRemove && sideToRemove.quantity > 1) {
         // Decrement quantity if more than 1
         const updatedSides = prevCart.sides.map((side) =>
-          side.id === idToRemove
+          side.side_id === idToRemove // Use side_id here
             ? { ...side, quantity: side.quantity - 1 }
             : side
         );
-
+  
         return {
           ...prevCart,
           sides: updatedSides,
           total: calculateTotal({ ...prevCart, sides: updatedSides }), // Recalculate total
         };
       }
-
+  
       // Remove the side if quantity is 1
       const filteredSides = prevCart.sides.filter(
-        (side) => side.id !== idToRemove
+        (side) => side.side_id !== idToRemove // Use side_id here
       );
-
+  
       return {
         ...prevCart,
         sides: filteredSides,

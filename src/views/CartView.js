@@ -74,7 +74,7 @@ export default function Cart() {
         <div className="add_border_bottom" key={i}>
           <p>{`${item.title} - $${item.price}`}</p>
           <p>{`Quantity: ${item.quantity || 0}`}</p>
-          <p className="fake_anchor" onClick={() => removeSide(item.id)}>
+          <p className="fake_anchor" onClick={() => removeSide(item.side_id)}> {/* Change to side_id */}
             remove
           </p>
         </div>
