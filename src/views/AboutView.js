@@ -21,7 +21,7 @@ export default function About() {
                 experimenting with flavors and techniques. This passion
                 eventually led him to create his signature dish, the Sloppy Jo
                 Pizza – a unique twist on the classic comfort food that combines
-                the hearty flavors of a traditional Sloppy Jo with the crispy,
+                the hearty flavors of a traditional Sloppy Joe with the crispy,
                 cheesy goodness of pizza.
               </p>
               <p>
