@@ -26,7 +26,7 @@ export default function Custom() {
     { name: "Blue Cheese", id: 18 },
     { name: "Jalapenos", id: 19 },
     { name: "Ground Beef", id: 20 },
-    { name: "Sloppy Joe Sauce", id: 21 },
+    { name: "Sloppy Jo Sauce", id: 21 },
   ];
 
   const currentDate = new Date();

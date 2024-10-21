@@ -15,25 +15,25 @@ export default function About() {
             <div className="p-2">
               <h2>Our Founder</h2>
               <p>
-                Sloppy Joe's Pizzeria was founded by Joe Peloso, a passionate
+                Sloppy Jo's Pizzeria was founded by Joe Peloso, a passionate
                 pizza enthusiast from Cleveland, Ohio. From a young age, Joe had
                 a deep love for pizza, spending countless hours in the kitchen
                 experimenting with flavors and techniques. This passion
-                eventually led him to create his signature dish, the Sloppy Joe
+                eventually led him to create his signature dish, the Sloppy Jo
                 Pizza – a unique twist on the classic comfort food that combines
-                the hearty flavors of a traditional Sloppy Joe with the crispy,
+                the hearty flavors of a traditional Sloppy Jo with the crispy,
                 cheesy goodness of pizza.
               </p>
               <p>
-                Joe’s vision for Sloppy Joe's Pizzeria was simple: to create a
+                Joe’s vision for Sloppy Jo's Pizzeria was simple: to create a
                 place where people could enjoy innovative, delicious pizzas in a
                 warm and welcoming atmosphere. His dedication to quality and
-                creativity is reflected in every slice, making Sloppy Joe's
+                creativity is reflected in every slice, making Sloppy Jo's
                 Pizzeria a beloved spot for pizza lovers near and far.
               </p>
               <p>
                 Come visit us and experience the mouthwatering taste of our
-                Sloppy Joe Pizza – a one-of-a-kind creation that embodies Joe's
+                Sloppy Jo Pizza – a one-of-a-kind creation that embodies Joe's
                 lifelong passion for pizza.
               </p>
             </div>

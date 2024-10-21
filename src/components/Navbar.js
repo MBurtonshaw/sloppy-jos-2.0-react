@@ -39,7 +39,7 @@ export default function Navbar() {
               <img
                 className="nav-pic-desktop"
                 src="img/spLogo.png"
-                alt="Joe's Sloppy Pizza"
+                alt="Jo's Sloppy Pizza"
               />
             </a>
           </div>
@@ -82,7 +82,7 @@ export default function Navbar() {
               <img
                 className="nav-pic-tablet"
                 src="img/spLogo.png"
-                alt="Joe's Sloppy Pizza"
+                alt="Jo's Sloppy Pizza"
               />
             </a>
           </div>
@@ -130,7 +130,7 @@ export default function Navbar() {
                 <img
                   className="nav-pic-mobile"
                   src="img/spLogo.png"
-                  alt="Joe's Sloppy Pizza"
+                  alt="Jo's Sloppy Pizza"
                 />
               </button>
               <ul className="dropdown-menu text-center">
