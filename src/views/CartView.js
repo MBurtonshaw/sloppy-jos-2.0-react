@@ -12,6 +12,7 @@ export default function Cart() {
   const [desktopMode, setDesktopMode] = useState(false);
   const [tabletMode, setTabletMode] = useState(false);
   const [mobileMode, setMobileMode] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const updateMode = () => {
     if (window.innerWidth <= 779) {
@@ -74,7 +75,9 @@ export default function Cart() {
         <div className="add_border_bottom" key={i}>
           <p>{`${item.title} - $${item.price}`}</p>
           <p>{`Quantity: ${item.quantity || 0}`}</p>
-          <p className="fake_anchor" onClick={() => removeSide(item.side_id)}> {/* Change to side_id */}
+          <p className="fake_anchor" onClick={() => removeSide(item.side_id)}>
+            {" "}
+            {/* Change to side_id */}
             remove
           </p>
         </div>
@@ -115,8 +118,16 @@ export default function Cart() {
   }
 
   async function submitCart() {
-    await actions.submitOrder();
-    navigate("/customer_info");
+    setIsSubmitting(true); // Set loading state
+    try {
+      await actions.submitOrder();
+      navigate("/customer_info");
+    } catch (error) {
+      console.error("Error submitting cart:", error);
+      // Optionally handle the error (e.g., show a notification)
+    } finally {
+      setIsSubmitting(false); // Reset loading state
+    }
   }
 
   if (mobileMode || tabletMode) {
@@ -135,10 +146,12 @@ export default function Cart() {
           {mapSidesMobile()}
           <div className="text-center mt-3">
             <button
-              className="px-5 py-2 mt-3 mb-5"
-              onClick={() => submitCart()}
+              className="px-5 py-2 mt-3 mb-5 submitter"
+              onClick={submitCart} // Directly use the function reference
+              disabled={isSubmitting} // Disable based on loading state
             >
-              Place Order
+              {isSubmitting ? "Placing Order..." : "Place Order"}{" "}
+              {/* Feedback */}
             </button>
           </div>
         </div>
@@ -158,8 +171,12 @@ export default function Cart() {
         {showSidesHeader()}
         {mapSidesMobile()}
         <div className="text-center mt-3">
-          <button className="px-5 py-2 mt-3 mb-5" onClick={() => submitCart()}>
-            Place Order
+          <button
+            className="px-5 py-2 mt-3 mb-5 submitter"
+            onClick={submitCart} // Directly use the function reference
+            disabled={isSubmitting} // Disable based on loading state
+          >
+            {isSubmitting ? "Placing Order..." : "Place Order"} {/* Feedback */}
           </button>
         </div>
       </div>
