@@ -59,7 +59,7 @@ export default function About() {
               <div class="col-xs-6 col-sm-3 text-center">
                 <a
                   class="nonchalant"
-                  href="https://verdant-cranachan-f205b0.netlify.app/"
+                  href="https://matthew-burtonshaw.netlify.app/"
                 >
                   <img
                     src="img/matt.png"
