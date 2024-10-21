@@ -353,7 +353,7 @@ export const Provider = ({ children }) => {
     await getCart(newId);
   }
 
-  async function restartCart() {
+async function restartCart() {
     setCart({
         specialtyPizzas: [],
         customPizzas: [],
