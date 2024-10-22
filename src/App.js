@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from "react";
 import Home from "./views/HomeView.js";
 import Navbar from "./components/Navbar.js";
 import Footer from "./components/Footer.js";
@@ -12,21 +12,20 @@ import CustomerInfo from "./views/CustomerInfoView.js";
 import Receipt from "./views/ReceiptView.js";
 
 function App() {
-
   return (
     <div className="App anton-sc-regular">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/custom" element={<Custom />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/customer_info" element={<CustomerInfo />} />
-          <Route path="/receipt" element={<Receipt />} />
-        </Routes>
-        <Footer />
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/custom" element={<Custom />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/customer_info" element={<CustomerInfo />} />
+        <Route path="/receipt" element={<Receipt />} />
+      </Routes>
+      <Footer />
     </div>
   );
 }

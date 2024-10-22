@@ -264,7 +264,7 @@ export default function CustomerInfo() {
               <div className="text-center mb-4">
                 <span>This app is for demonstration purposes only. </span>
                 <p>
-                  Even so, please do not enter any actual sensitive information.
+                  Even so, please do not enter an actual credit card number.
                 </p>
               </div>
               <table className="table">
@@ -430,7 +430,7 @@ export default function CustomerInfo() {
           </h1>
           <span>This app is for demonstration purposes only. </span>
           <br></br>
-          <p>Even so, please do not enter any actual sensitive information.</p>
+          <p>Even so, please do not enter an actual credit card number.</p>
           <div className="mb-4">
             <form className="w-75 m-auto">
               <div className="py-4">

@@ -120,7 +120,9 @@ export default function Receipt() {
   return (
     <>
       <h1 className="text-center pt-5 pb-3">Order Receipt</h1>
-      <p className='text-center border-bottom'>A receipt has also been sent to the provided email address</p>
+      <p className="text-center border-bottom">
+        A receipt has also been sent to the provided email address
+      </p>
       <div className="">
         <div className="text-center pt-4 pb-2">{specialtyMapper()}</div>
         <div className="text-center">{customsMapper()}</div>
