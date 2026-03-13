@@ -1,3 +1,3 @@
 export default {
-    apiBaseUrl: 'https://sloppy-jos-v2-3b638fb325b3.herokuapp.com/'
+    apiBaseUrl: 'https://sloppy-jos-v2-9b8c258a0525.herokuapp.com/'
   };
